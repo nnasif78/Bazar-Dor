@@ -2,6 +2,8 @@
 
 import { toast } from "react-toastify";
 
+export const PROFILE_AUTH_TOAST_KEY = "bazar-dor:profile-auth-toast";
+
 const ICONS = {
     success: "https://cdn-icons-png.flaticon.com/512/845/845646.png",
     error: "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/alert-icon.png",

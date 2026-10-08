@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button, Form, Input, Label, TextField, FieldError } from "@heroui/react";
 import { signIn } from "@/lib/auth-client";
-import { showToast } from "@/lib/toast";
+import { PROFILE_AUTH_TOAST_KEY, showToast } from "@/lib/toast";
 
 const login = async () => {
     const { error } = await signIn.social({ provider: "google" });
@@ -27,6 +27,16 @@ const getSignInErrorMessage = (error) => {
 
 const SignIn = () => {
     const router = useRouter();
+
+    useEffect(() => {
+        const message = window.sessionStorage.getItem(PROFILE_AUTH_TOAST_KEY);
+        if (!message) return;
+
+        window.sessionStorage.removeItem(PROFILE_AUTH_TOAST_KEY);
+        const toastTimer = window.setTimeout(() => showToast.alert(message), 100);
+        return () => window.clearTimeout(toastTimer);
+    }, []);
+
     const onSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget), data = {};

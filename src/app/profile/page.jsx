@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button, Form, Input, Label, TextField } from "@heroui/react";
 import { authClient, signOut, useSession } from "@/lib/auth-client";
-import { showToast } from "@/lib/toast";
+import { PROFILE_AUTH_TOAST_KEY, showToast } from "@/lib/toast";
 import { LoadingLabel } from "@/components/ProductCardSkeleton";
 
 export default function Profile() {
@@ -17,12 +17,9 @@ export default function Profile() {
     useEffect(() => {
         if (!isPending && !session?.user && !redirectHandled.current) {
             redirectHandled.current = true;
-            const toastTimer = window.setTimeout(() => {
-                showToast.alert("প্রোফাইল দেখতে আগে সাইন ইন করুন।");
-            }, 0);
+            window.sessionStorage.setItem(PROFILE_AUTH_TOAST_KEY, "প্রোফাইল দেখতে আগে সাইন ইন করুন।");
             const redirectTimer = window.setTimeout(() => router.replace("/sign-in"), 1000);
             return () => {
-                window.clearTimeout(toastTimer);
                 window.clearTimeout(redirectTimer);
             };
         }
