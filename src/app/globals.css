@@ -11,7 +11,7 @@
 }
 
 .bazar-marquee {
-    animation: bazar-marquee 20s linear infinite;
+    animation: bazar-marquee 40s linear infinite;
     width: max-content;
 }
 
@@ -51,7 +51,7 @@
     visibility: hidden !important;
 }
 .bazar-marquee {
-    animation: bazar-marquee 20s linear infinite;
+    animation: bazar-marquee 40s linear infinite;
     width: max-content;
 }
 
