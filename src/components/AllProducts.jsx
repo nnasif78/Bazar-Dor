@@ -19,7 +19,7 @@ export default function AllProducts() {
     const unit = value => value === "kg" ? "কেজি" : value === "dozen" ? "ডজন" : value === "litre" ? "লিটার" : "পিস";
     const banglaNumber = value => Number(value).toFixed(1).replace(/\d/g, digit => "০১২৩৪৫৬৭৮৯"[digit]);
     return (
-        <section className="bg-[#F0F5F0] px-4 py-8">
+        <section id="সব-পণ্য" className="scroll-mt-4 bg-[#F0F5F0] px-4 py-8">
             <div className="mx-auto max-w-6xl">
                 <div className="mb-5">
                     <h2 className="text-[28px] font-bold leading-9 text-[#111827]">সব পণ্য</h2>
