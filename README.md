@@ -19,7 +19,7 @@
 - [Tailwind CSS 4](https://tailwindcss.com/) and [HeroUI](https://www.heroui.com/)
 - [Better Auth](https://www.better-auth.com/) for authentication
 - [MongoDB](https://www.mongodb.com/) with the Better Auth MongoDB adapter
-- [React Toastify](https://fkhadra.github.io/react-toastify/) for notifications
+- [React Hot Toast](https://react-hot-toast.com/) for notifications
 - Product and category data from the BazarDor API
 - [Vercel](https://vercel.com/) for deployment
 

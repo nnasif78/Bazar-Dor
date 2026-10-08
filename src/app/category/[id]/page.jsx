@@ -79,9 +79,6 @@ function CategoryPageContent() {
     const sortedProducts = [...products].sort((a, b) => {
         if (sort === "price-low") return a.today - b.today;
         if (sort === "price-high") return b.today - a.today;
-        if (sort === "change-high") {
-            return Math.abs(b.change?.pct || 0) - Math.abs(a.change?.pct || 0);
-        }
         return 0;
     });
 
@@ -147,19 +144,22 @@ function CategoryPageContent() {
                     <div className="flex w-full flex-col items-end gap-2">
                         <div className="flex items-center gap-2">
                             <span className="text-[14px] text-[#374151]">
-                                সাজান
+                                সাজান:
                             </span>
 
-                            <select
-                                value={sort}
-                                onChange={e => setSort(e.target.value)}
-                                className="h-9 rounded-full border border-[#D1D5DB] bg-white px-3 pr-2 text-[13px] text-[#374151] outline-none"
-                            >
-                                <option value="default">ডিফল্ট</option>
-                                <option value="price-low">দাম: কম থেকে বেশি</option>
-                                <option value="price-high">দাম: বেশি থেকে কম</option>
-                                <option value="change-high">পরিবর্তন: বেশি</option>
-                            </select>
+                            <div className="relative">
+                                <select
+                                    value={sort}
+                                    onChange={e => setSort(e.target.value)}
+                                    aria-label="পণ্যের তালিকা সাজান"
+                                    className="h-9 appearance-none rounded-full border border-[#D1D5DB] bg-white py-1 pl-3 pr-8 text-[13px] text-[#374151] outline-none"
+                                >
+                                    <option value="default">ডিফল্ট</option>
+                                    <option value="price-low">দাম: কম থেকে বেশি</option>
+                                    <option value="price-high">দাম: বেশি থেকে কম</option>
+                                </select>
+                                <span aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-[#6B7280]">▼</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -202,9 +202,9 @@ function CategoryPageContent() {
 
                                     <span className={`absolute bottom-5 right-5 rounded-full px-2.5 py-1 text-[12px] font-bold ${
                                         direction === "up"
-                                            ? "bg-[#FEF2F2] text-[#DC2626]"
-                                            : direction === "down"
-                                                ? "bg-[#ECFDF3] text-[#047F39]"
+                                        ? "bg-[#ECFDF3] text-[#047F39]"
+                                        : direction === "down"
+                                                ? "bg-[#FEF2F2] text-[#DC2626]"
                                                 : "bg-[#F3F4F6] text-[#6B7280]"
                                     }`}>
                                         {direction === "up" ? "▲" : direction === "down" ? "▼" : "—"}{" "}

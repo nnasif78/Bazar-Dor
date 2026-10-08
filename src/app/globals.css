@@ -15,41 +15,6 @@
     width: max-content;
 }
 
-:root {
-    --toastify-color-light: #ffffff;
-    --toastify-toast-width: min(420px, calc(100vw - 2rem));
-    --toastify-toast-background: #ffffff;
-    --toastify-text-color-light: #111827;
-    --toastify-font-family: inherit;
-}
-
-.Toastify__toast {
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(17, 24, 39, 0.12);
-    padding: 12px 16px;
-    min-height: 56px;
-    background: #ffffff;
-}
-
-.Toastify__toast-body {
-    margin: 0;
-    padding: 0;
-    gap: 10px;
-}
-
-.Toastify__toast-icon {
-    width: 24px;
-    margin-inline-end: 10px;
-}
-
-.Toastify__close-button,
-.Toastify__toast-title {
-    display: none !important;
-}
-
-.Toastify__progress-bar {
-    visibility: hidden !important;
-}
 .bazar-marquee {
     animation: bazar-marquee 40s linear infinite;
     width: max-content;
