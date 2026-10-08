@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
 import { LoadingLabel } from "@/components/ProductCardSkeleton";
@@ -11,6 +12,8 @@ function ProductDetailsContent() {
     const router = useRouter();
     const { data: session, isPending } = useSession();
     const [product, setProduct] = useState(null);
+    const [productNotFound, setProductNotFound] = useState(false);
+    const [loadError, setLoadError] = useState(false);
     const signInRedirectHandled = useRef(false);
 
     useEffect(() => {
@@ -22,15 +25,65 @@ function ProductDetailsContent() {
     }, [isPending, session, router]);
 
     useEffect(() => {
-        if (session?.user && id) {
-            fetch(`https://api.api-store.workers.dev/api/bazardor/products/${id}`)
-                .then(res => res.json())
-                .then(data => setProduct(data));
-        }
+        if (!session?.user || !id) return;
+
+        setProduct(null);
+        setProductNotFound(false);
+        setLoadError(false);
+
+        const fetchProduct = async () => {
+            try {
+                const response = await fetch(`https://api.api-store.workers.dev/api/bazardor/products/${id}`);
+                if (response.status === 404) {
+                    setProductNotFound(true);
+                    return;
+                }
+                if (!response.ok) throw new Error("Product request failed");
+
+                const data = await response.json();
+                if (!data?.nameBn) {
+                    setProductNotFound(true);
+                    return;
+                }
+                setProduct(data);
+            } catch (error) {
+                console.error(error);
+                setLoadError(true);
+                showToast.error("পণ্যের তথ্য লোড করতে সমস্যা হয়েছে।");
+            }
+        };
+
+        fetchProduct();
     }, [session, id]);
 
     const banglaNumber = value => Number(value).toFixed(1).replace(/\d/g, digit => "০১২৩৪৫৬৭৮৯"[digit]);
     const unit = value => value === "kg" ? "কেজি" : value === "dozen" ? "ডজন" : value === "litre" ? "লিটার" : "পিস";
+
+    if (!isPending && session?.user && (productNotFound || loadError)) {
+        return (
+            <main className="flex min-h-[calc(100vh-138px)] items-center justify-center bg-[#F0F5F0] px-4 py-10">
+                <section className="w-full max-w-xl rounded-3xl border border-[#E5E7EB] bg-white px-6 py-12 text-center shadow-sm">
+                    <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-[#E8F5EC] text-4xl" aria-hidden="true">
+                        {loadError ? "⚠️" : "🔎"}
+                    </div>
+                    <p className="mt-6 text-[72px] font-extrabold leading-none tracking-tight text-[#047F39]">
+                        {loadError ? "!" : "৪০৪"}
+                    </p>
+                    <h1 className="mt-4 text-2xl font-bold text-[#111827]">
+                        {loadError ? "পণ্যের তথ্য লোড করা যায়নি" : "পণ্যটি পাওয়া যায়নি"}
+                    </h1>
+                    <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#6B7280]">
+                        {loadError
+                            ? "আবার চেষ্টা করুন, অথবা হোম পেজে ফিরে যান।"
+                            : "পণ্যটি সরিয়ে ফেলা হয়েছে, অথবা ঠিকানাটি সঠিক নয়।"}
+                    </p>
+                    <Link href="/" className="mt-7 inline-flex h-11 items-center justify-center rounded-lg bg-[#047F39] px-5 text-sm font-bold text-white transition hover:bg-[#036B30]">
+                        হোম পেজে ফিরে যান
+                    </Link>
+                </section>
+            </main>
+        );
+    }
 
     if (isPending || !session?.user || !product) {
         return (
@@ -171,7 +224,7 @@ function ProductDetailsContent() {
                         <div className="overflow-x-auto">
                             <table className="w-full min-w-[700px] text-left">
                                 <thead className="bg-white">
-                                    <tr className="border-b border-[#111827]">
+                                    <tr className="border-b border-[#D1D5DB]">
                                         <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">বাজার</th>
                                         <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">বিভাগ</th>
                                         <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">সর্বনিম্ন</th>
