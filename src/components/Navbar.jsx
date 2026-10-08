@@ -155,8 +155,8 @@ export default function Navbar() {
                                     <span className="text-[18px] leading-none font-['Segoe_UI_Emoji'] text-[#111827]">{product.image || product.categoryIcon}</span>
                                     <span className="text-[14px] font-medium leading-5 text-[#111827]">{product.nameBn}</span>
                                     <span className="text-[14px] font-normal leading-5 text-[#374151]">{formatPrice(product.today)} টাকা/{getUnit(product.unit)}</span>
-                                    {isUp && <span className="text-[14px] font-semibold leading-5 text-[#047F39]">▲ {formatPrice(product.change.pct)}%</span>}
-                                    {isDown && <span className="text-[14px] font-semibold leading-5 text-[#DC2626]">▼ {formatPrice(product.change.pct)}%</span>}
+                                    {isUp && <span className="text-[14px] font-semibold leading-5 text-[#DC2626]">▲ {formatPrice(product.change.pct)}%</span>}
+                                    {isDown && <span className="text-[14px] font-semibold leading-5 text-[#047F39]">▼ {formatPrice(product.change.pct)}%</span>}
                                 </Link>
                             );
                         })}

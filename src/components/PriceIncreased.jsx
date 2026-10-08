@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import ProductCardSkeleton, { LoadingLabel } from "@/components/ProductCardSkeleton";
 
+const banglaDigits = value => String(value).replace(/\d/g, digit => "০১২৩৪৫৬৭৮৯"[digit]);
+
 export default function PriceIncreased() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -42,7 +44,7 @@ export default function PriceIncreased() {
                             </div>
 
                             <span className="absolute bottom-5 right-5 rounded-full bg-[#FEF2F2] px-2.5 py-1 text-[12px] font-semibold text-[#DC2626]">
-                                ▲ {product.change.pct}%
+                                ▲ {banglaDigits(product.change.pct)}%
                             </span>
                         </div>
                        </Link>
