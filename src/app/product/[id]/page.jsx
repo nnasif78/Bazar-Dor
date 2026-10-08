@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
@@ -11,9 +11,11 @@ function ProductDetailsContent() {
     const router = useRouter();
     const { data: session, isPending } = useSession();
     const [product, setProduct] = useState(null);
+    const signInRedirectHandled = useRef(false);
 
     useEffect(() => {
-        if (!isPending && !session?.user) {
+        if (!isPending && !session?.user && !signInRedirectHandled.current) {
+            signInRedirectHandled.current = true;
             showToast.alert("অনুগ্রহ করে আগে সাইন ইন করুন।");
             router.replace("/sign-in");
         }
