@@ -1,6 +1,6 @@
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import HomeNavigationButton from "@/components/HomeNavigationButton";
 
 export default function NotFoundView() {
     return (
@@ -12,7 +12,7 @@ export default function NotFoundView() {
                     <p className="mt-6 text-[72px] font-extrabold leading-none tracking-tight text-[#047F39]">৪০৪</p>
                     <h1 className="mt-4 text-2xl font-bold text-[#111827]">পেজটি পাওয়া যায়নি</h1>
                     <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#6B7280]">আপনি যে পেজটি খুঁজছেন সেটি হয়তো সরিয়ে ফেলা হয়েছে, ঠিকানা ভুল, অথবা পেজটির অস্তিত্ব নেই।</p>
-                    <Link href="/" className="mt-7 inline-flex h-11 items-center justify-center rounded-lg bg-[#047F39] px-5 text-sm font-bold text-white transition hover:bg-[#036B30] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#047F39]">হোম পেজে ফিরে যান</Link>
+                    <HomeNavigationButton />
                 </section>
             </main>
             <Footer />
