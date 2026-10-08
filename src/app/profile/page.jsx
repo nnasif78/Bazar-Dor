@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Button, Form, Input, Label, TextField } from "@heroui/react";
 import { authClient, signOut, useSession } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
@@ -9,6 +10,17 @@ import { LoadingLabel } from "@/components/ProductCardSkeleton";
 
 export default function Profile() {
     const { data: session, isPending } = useSession(), [name, setName] = useState("");
+    const router = useRouter();
+    const redirectHandled = useRef(false);
+
+    useEffect(() => {
+        if (!isPending && !session?.user && !redirectHandled.current) {
+            redirectHandled.current = true;
+            showToast.alert("প্রোফাইল দেখতে আগে সাইন ইন করুন।");
+            router.replace("/sign-in");
+        }
+    }, [isPending, session, router]);
+
     if (isPending) return (
         <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-10">
             <div className="mx-auto mt-20 max-w-4xl">
