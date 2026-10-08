@@ -147,18 +147,18 @@ function ProductDetailsContent() {
                         {product.nameBn}
                     </Link>
                 </nav>
-                <div className="flex flex-col gap-6 rounded-2xl border border-[#E5E7EB] bg-white p-6 md:flex-row md:items-center md:justify-between">
-                    <div className="flex items-center gap-4">
-                        <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-[#F0F5F0] text-[42px]">
+                <div className="flex flex-col gap-5 rounded-2xl border border-[#E5E7EB] bg-white p-4 sm:gap-6 sm:p-6 md:flex-row md:items-center md:justify-between">
+                    <div className="flex min-w-0 items-start gap-3 sm:items-center sm:gap-4">
+                        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-[#F0F5F0] text-[36px] sm:h-20 sm:w-20 sm:text-[42px]">
                             {product.image || product.categoryIcon}
                         </div>
-                        <div>
-                            <h1 className="text-[26px] font-bold text-[#111827]">{product.nameBn}</h1>
+                        <div className="min-w-0 flex-1">
+                            <h1 className="break-words text-[22px] font-bold leading-tight text-[#111827] sm:text-[26px]">{product.nameBn}</h1>
                             <p className="mt-1 text-[14px] text-[#6B7280]">প্রতি {unit(product.unit)}</p>
                             <span className="mt-2 inline-flex rounded-full bg-[#E8F5EC] px-3 py-1 text-[12px] font-semibold text-[#047F39]">
                                 {product.categoryNameBn}
                             </span>
-                            <p className="mt-2 text-[14px] text-[#374151]">
+                            <p className="mt-2 break-words text-[14px] leading-5 text-[#374151]">
                                 গতকালের তুলনায় আজ দাম{" "}
                                 <span className="font-bold">
                                     {direction === "up"
@@ -171,17 +171,19 @@ function ProductDetailsContent() {
                             </p>
                         </div>
                     </div>
-                    <div className="flex h-[132px] w-[117px] shrink-0 flex-col items-center justify-center rounded-xl bg-[#F0F5F0] p-3">
-                        <p className="text-[13px] text-[#6B7280]">আজকের দাম</p>
-                        <div className="mt-1 flex items-end justify-center gap-1">
-                            <span className="text-[28px] font-bold text-[#111827]">
-                                {banglaNumber(product.today)}
-                            </span>
+                    <div className="flex w-full items-center justify-between gap-3 rounded-xl bg-[#F0F5F0] p-4 md:h-[132px] md:w-[117px] md:shrink-0 md:flex-col md:justify-center md:p-3">
+                        <div className="min-w-0 md:text-center">
+                            <p className="text-[13px] text-[#6B7280]">আজকের দাম</p>
+                            <div className="mt-1 flex items-baseline gap-1 md:justify-center">
+                                <span className="text-[28px] font-bold leading-tight text-[#111827]">
+                                    {banglaNumber(product.today)}
+                                </span>
+                                <span className="text-[13px] text-[#6B7280]">
+                                    টাকা / {unit(product.unit)}
+                                </span>
+                            </div>
                         </div>
-                        <span className="text-[13px] text-[#6B7280]">
-                            টাকা / {unit(product.unit)}
-                        </span>
-                        <span className={`mt-2 inline-flex rounded-full px-2 py-1 text-[12px] font-bold ${direction === "up"
+                        <span className={`inline-flex shrink-0 rounded-full px-2 py-1 text-[12px] font-bold md:mt-2 ${direction === "up"
                                 ? "bg-[#FEF2F2] text-[#DC2626]"
                                 : direction === "down"
                                     ? "bg-[#ECFDF3] text-[#047F39]"
