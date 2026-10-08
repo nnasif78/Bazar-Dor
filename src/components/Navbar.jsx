@@ -113,7 +113,8 @@ export default function Navbar() {
                                                 <span>👤</span><span>আমার প্রোফাইল</span>
                                             </Link>
                                             <button type="button" onClick={handleSignOut} className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[14px] font-normal leading-[21px] text-red-500 transition hover:bg-red-50">
-                                                <span>↩</span><span>সাইন আউট</span>
+                                                <span aria-hidden="true" className="inline-block h-[18px] w-[18px] shrink-0 bg-[#cc3333] [mask-image:url('/image_c35a23.png')] [mask-size:contain] [mask-repeat:no-repeat] [-webkit-mask-image:url('/image_c35a23.png')] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat]" />
+                                                <span>সাইন আউট</span>
                                             </button>
                                         </div>
                                     </div>

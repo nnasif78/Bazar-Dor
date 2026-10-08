@@ -95,7 +95,10 @@ export default function Profile() {
                             <p className="mt-1 break-all text-[14px] text-[#6B7280]">{user.email}</p>
                         </div>
                     </div>
-                    <Button onPress={() => signOut({ fetchOptions: { onSuccess: () => showToast.success("সাইন আউট সফল হয়েছে।") } })} className="w-full max-w-40 rounded-lg border border-[#FCA5A5] bg-white px-4 text-[14px] font-semibold text-[#DC2626] hover:bg-[#FEF2F2] sm:w-auto">← সাইন আউট</Button>
+                    <Button onPress={() => signOut({ fetchOptions: { onSuccess: () => showToast.success("সাইন আউট সফল হয়েছে।") } })} className="flex w-full max-w-40 items-center justify-center gap-2 rounded-lg border border-[#FCA5A5] bg-white px-4 text-[14px] font-semibold text-[#DC2626] hover:bg-[#FEF2F2] sm:w-auto">
+                        <span aria-hidden="true" className="inline-block h-[18px] w-[18px] shrink-0 bg-[#cc3333] [mask-image:url('/image_c35a23.png')] [mask-size:contain] [mask-repeat:no-repeat] [-webkit-mask-image:url('/image_c35a23.png')] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat]" />
+                        <span>সাইন আউট</span>
+                    </Button>
                 </div>
                 <div className="mt-5 rounded-2xl border border-[#E5E7EB] bg-white p-6">
                     <h2 className="text-[18px] font-bold text-[#111827]">তথ্য</h2>
