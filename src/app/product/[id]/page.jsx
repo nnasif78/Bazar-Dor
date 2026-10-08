@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
+import { showToast } from "@/lib/toast";
 
 function ProductDetailsContent() {
     const { id } = useParams();
@@ -11,7 +12,10 @@ function ProductDetailsContent() {
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
-        if (!isPending && !session?.user) router.replace("/sign-in");
+        if (!isPending && !session?.user) {
+            showToast.alert("অনুগ্রহ করে আগে সাইন ইন করুন।");
+            router.replace("/sign-in");
+        }
     }, [isPending, session, router]);
 
     useEffect(() => {

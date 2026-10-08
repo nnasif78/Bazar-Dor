@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
+import { showToast } from "@/lib/toast";
 
 const CATEGORIES_API = "https://api.api-store.workers.dev/api/bazardor/categories";
 const PRODUCTS_API = "https://api.api-store.workers.dev/api/bazardor/products";
@@ -63,7 +64,7 @@ export default function Navbar() {
     }, []);
     const tickerProducts = useMemo(() => [...products, ...products], [products]);
     const handleSignOut = async () => {
-        await signOut({ fetchOptions: { onSuccess: () => { setProfileOpen(false); router.push("/"); } } });
+        await signOut({ fetchOptions: { onSuccess: () => { setProfileOpen(false); showToast.success("সাইন আউট সফল হয়েছে।"); router.push("/"); } } });
     };
     const isLoggedIn = Boolean(session?.user);
     return (
@@ -102,10 +103,10 @@ export default function Navbar() {
                                         </div>
                                         <div className="pt-2">
                                             <Link href="/profile" onClick={() => setProfileOpen(false)} className="flex items-center gap-2 rounded-md px-2 py-2 text-[14px] font-normal leading-[21px] text-[#111827] transition hover:bg-[#F3F4F6]">
-                                                <span>{session.user.image || ""}</span><span>আমার প্রোফাইল</span>
+                                                <span>👤</span><span>আমার প্রোফাইল</span>
                                             </Link>
                                             <button type="button" onClick={handleSignOut} className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[14px] font-normal leading-[21px] text-red-500 transition hover:bg-red-50">
-                                                <span>সাইন আউট</span>
+                                                <span>↩</span><span>সাইন আউট</span>
                                             </button>
                                         </div>
                                     </div>

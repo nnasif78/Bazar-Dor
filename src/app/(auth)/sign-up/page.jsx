@@ -4,21 +4,39 @@ import React from "react";
 import Link from "next/link";
 import { Button, Form, Input, Label, TextField, FieldError } from "@heroui/react";
 import { signIn, signUp } from "@/lib/auth-client";
+import { showToast } from "@/lib/toast";
 
-const login = async () => await signIn.social({ provider: "google" });
-const handleGithubSignIn = async () => await signIn.social({ provider: "github" });
+const login = async () => {
+    const { error } = await signIn.social({ provider: "google" });
+    if (error) showToast.error(error.message || "Google দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
+};
+
+const handleGithubSignIn = async () => {
+    const { error } = await signIn.social({ provider: "github" });
+    if (error) showToast.error(error.message || "GitHub দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
+};
 
 const SignUp = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget), data = {};
         formData.forEach((value, key) => data[key] = value.toString());
-        if (data.password !== data.confirmPassword) return;
+        if (data.password !== data.confirmPassword) {
+            showToast.error("পাসওয়ার্ড মিলছে না।");
+            return;
+        }
 
         const { data: signupdata, error } = await signUp.email({
             name: data.name, email: data.email, password: data.password, callbackURL: "/",
         });
         console.log(signupdata, error);
+
+        if (error) {
+            showToast.error(error.message || "অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে।");
+            return;
+        }
+
+        showToast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে।");
     };
 
     return (
@@ -37,7 +55,7 @@ const SignUp = () => {
                             <FieldError />
                         </TextField>
 
-                        <TextField isRequired name="email" type="email" validate={(value) => !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value) ? "সঠিক ইমেইল দিন" : null}>
+                        <TextField isRequired name="email" type="email" validate={(value) => !/^[A-Z0-9.\_%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value) ? "সঠিক ইমেইল দিন" : null}>
                             <Label className="mb-1.5 text-[14px] font-semibold text-[#111827]">ইমেইল</Label>
                             <Input className="h-10 rounded-lg border-[#D1D5DB] px-3 text-[14px]" placeholder="you@example.com" />
                             <FieldError />

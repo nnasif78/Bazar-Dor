@@ -4,12 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import { Button, Form, Input, Label, TextField } from "@heroui/react";
 import { authClient, signOut, useSession } from "@/lib/auth-client";
+import { showToast } from "@/lib/toast";
 
 export default function Profile() {
     const { data: session, isPending } = useSession(), [name, setName] = useState("");
     if (isPending) return <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] p-8" />;
     if (!session?.user) return null;
-    const user = session.user, updateProfile = async e => { e.preventDefault(); await authClient.updateUser({ name }); setName("");};
+    const user = session.user, updateProfile = async e => { e.preventDefault(); const { error } = await authClient.updateUser({ name }); if (error) showToast.error(error.message || "প্রোফাইল আপডেট করতে সমস্যা হয়েছে।"); else { setName(""); showToast.success("প্রোফাইল সফলভাবে আপডেট হয়েছে।"); } };
 
     return (
         <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-10 ">
@@ -24,7 +25,7 @@ export default function Profile() {
                         <h2 className="text-[18px] font-semibold text-[#111827]">{user.name}</h2><p className="mt-1 text-[14px] text-[#6B7280]">{user.email}</p>
                         </div>
                         </div>
-                    <Button onPress={() => signOut()} className="rounded-lg border border-[#FCA5A5] bg-white px-4 text-[14px] font-semibold text-[#DC2626] hover:bg-[#FEF2F2]">← সাইন আউট</Button>
+                    <Button onPress={() => signOut({ fetchOptions: { onSuccess: () => showToast.success("সাইন আউট সফল হয়েছে।") } })} className="rounded-lg border border-[#FCA5A5] bg-white px-4 text-[14px] font-semibold text-[#DC2626] hover:bg-[#FEF2F2]">← সাইন আউট</Button>
                 </div>
                 <div className="mt-5 rounded-2xl border border-[#E5E7EB] bg-white p-6">
                     <h2 className="text-[18px] font-bold text-[#111827]">তথ্য</h2>

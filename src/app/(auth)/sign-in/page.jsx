@@ -4,9 +4,17 @@ import React from "react";
 import Link from "next/link";
 import { Button, Form, Input, Label, TextField, FieldError } from "@heroui/react";
 import { signIn } from "@/lib/auth-client";
+import { showToast } from "@/lib/toast";
 
-const login = async () => await signIn.social({ provider: "google" });
-const handleGithubSignIn = async () => await signIn.social({ provider: "github" });
+const login = async () => {
+    const { error } = await signIn.social({ provider: "google" });
+    if (error) showToast.error(error.message || "Google দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
+};
+
+const handleGithubSignIn = async () => {
+    const { error } = await signIn.social({ provider: "github" });
+    if (error) showToast.error(error.message || "GitHub দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
+};
 
 const SignIn = () => {
     const onSubmit = async (e) => {
@@ -18,6 +26,13 @@ const SignIn = () => {
             email: data.email, password: data.password, rememberMe: true, callbackURL: "/",
         });
         console.log(signindata, error);
+
+        if (error) {
+            showToast.error(error.message || "সাইন ইন করতে সমস্যা হয়েছে।");
+            return;
+        }
+
+        showToast.success("সাইন ইন সফল হয়েছে।");
     };
 
     return (
@@ -30,7 +45,7 @@ const SignIn = () => {
 
                 <div className="h-[374px] w-[416px] max-w-full rounded-2xl border border-[#E5E7EB] bg-white p-5 shadow-sm">
                     <Form className="flex w-full flex-col gap-4" onSubmit={onSubmit}>
-                        <TextField isRequired name="email" type="email" validate={(value) => !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value) ? "সঠিক ইমেইল দিন" : null}>
+                        <TextField isRequired name="email" type="email" validate={(value) => !/^[A-Z0-9.\_%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value) ? "সঠিক ইমেইল দিন" : null}>
                             <Label className="mb-1.5 text-[14px] font-medium text-[#111827]">ইমেইল</Label>
                             <Input className="h-10 rounded-lg border-[#D1D5DB] px-3 text-[14px]" placeholder="you@example.com" />
                             <FieldError />

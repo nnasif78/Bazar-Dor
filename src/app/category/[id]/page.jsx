@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { showToast } from "@/lib/toast";
 
-export default function CategoryPage() {
+function CategoryPageContent() {
     const { id } = useParams();
     const [products, setProducts] = useState([]);
     const [category, setCategory] = useState(null);
@@ -28,6 +29,7 @@ export default function CategoryPage() {
                 setCategory(categoryData);
             } catch (error) {
                 console.error(error);
+                showToast.error("পণ্যের তথ্য লোড করতে সমস্যা হয়েছে।");
             } finally {
                 setLoading(false);
             }
@@ -125,7 +127,7 @@ export default function CategoryPage() {
                                 <div className="relative h-[140px] w-full max-w-[360px] rounded-2xl border border-[#D1D5DB] bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-md">
                                     <div className="flex items-start gap-4">
                                         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#F0F5F0] text-[30px]">
-                                            {product.category === "dal" ? "🫘" : product.image || product.categoryIcon}
+                                            {product.image || product.categoryIcon}
                                         </div>
 
                                         <div>
@@ -164,5 +166,29 @@ export default function CategoryPage() {
                 </div>
             </div>
         </main>
+    );
+}
+
+function CategoryPageLoading() {
+    return (
+        <main className="min-h-[calc(100vh-68px)] animate-pulse bg-[#F0F5F0] px-4 py-10">
+            <div className="mx-auto max-w-6xl">
+                <div className="h-28 rounded-3xl border border-[#E5E7EB] bg-white" />
+                <div className="mt-5 h-16 rounded-3xl border border-[#E5E7EB] bg-white" />
+                <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {[...Array(6)].map((_, index) => (
+                        <div key={index} className="h-[140px] rounded-2xl bg-white" />
+                    ))}
+                </div>
+            </div>
+        </main>
+    );
+}
+
+export default function CategoryPage() {
+    return (
+        <Suspense fallback={<CategoryPageLoading />}>
+            <CategoryPageContent />
+        </Suspense>
     );
 }
