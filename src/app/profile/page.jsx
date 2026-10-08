@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button, Form, Input, Label, TextField } from "@heroui/react";
 import { authClient, signOut, useSession } from "@/lib/auth-client";
@@ -16,8 +17,14 @@ export default function Profile() {
     useEffect(() => {
         if (!isPending && !session?.user && !redirectHandled.current) {
             redirectHandled.current = true;
-            showToast.alert("প্রোফাইল দেখতে আগে সাইন ইন করুন।");
-            router.replace("/sign-in");
+            const toastTimer = window.setTimeout(() => {
+                showToast.alert("প্রোফাইল দেখতে আগে সাইন ইন করুন।");
+            }, 0);
+            const redirectTimer = window.setTimeout(() => router.replace("/sign-in"), 1000);
+            return () => {
+                window.clearTimeout(toastTimer);
+                window.clearTimeout(redirectTimer);
+            };
         }
     }, [isPending, session, router]);
 
@@ -35,7 +42,17 @@ export default function Profile() {
             </div>
         </main>
     );
-    if (!session?.user) return null;
+    if (!session?.user) return (
+        <main className="flex min-h-[calc(100vh-138px)] items-center justify-center bg-[#F0F5F0] px-4 py-10">
+            <section className="w-full max-w-md rounded-2xl border border-[#E5E7EB] bg-white p-8 text-center shadow-sm">
+                <h1 className="text-2xl font-bold text-[#111827]">প্রোফাইল দেখতে সাইন ইন করুন</h1>
+                <p className="mt-2 text-sm text-[#6B7280]">আপনার অ্যাকাউন্টের তথ্য দেখতে আগে সাইন ইন করতে হবে।</p>
+                <Link href="/sign-in" className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-[#047F39] px-5 text-sm font-bold text-white transition hover:bg-[#036B30]">
+                    সাইন ইন করুন
+                </Link>
+            </section>
+        </main>
+    );
     const user = session.user, updateProfile = async e => { e.preventDefault(); const { error } = await authClient.updateUser({ name }); if (error) showToast.error(error.message || "প্রোফাইল আপডেট করতে সমস্যা হয়েছে।"); else { setName(""); showToast.success("প্রোফাইল সফলভাবে আপডেট হয়েছে।"); } };
 
     return (
