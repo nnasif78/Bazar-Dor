@@ -5,6 +5,7 @@ import Link from "next/link";
 import ProductCardSkeleton, { LoadingLabel } from "@/components/ProductCardSkeleton";
 import { showToast } from "@/lib/toast";
 import { waitForMinimumSkeleton } from "@/lib/loading";
+import { fetchBazardor } from "@/lib/bazardor-api";
 
 export default function AllProducts() {
     const [products, setProducts] = useState([]);
@@ -12,7 +13,7 @@ export default function AllProducts() {
 
     useEffect(() => {
         const startedAt = Date.now();
-        fetch("https://api.api-store.workers.dev/api/bazardor/products")
+        fetchBazardor("/products")
             .then(res => {
                 if (!res.ok) throw new Error("Failed to fetch products");
                 return res.json();

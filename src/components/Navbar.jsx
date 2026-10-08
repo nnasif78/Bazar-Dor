@@ -8,9 +8,10 @@ import { useSession, signOut } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
 import { LoadingLabel } from "@/components/ProductCardSkeleton";
 import { waitForMinimumSkeleton } from "@/lib/loading";
+import { fetchBazardor } from "@/lib/bazardor-api";
 
-const CATEGORIES_API = "https://api.api-store.workers.dev/api/bazardor/categories";
-const PRODUCTS_API = "https://api.api-store.workers.dev/api/bazardor/products";
+const CATEGORIES_API = "/categories";
+const PRODUCTS_API = "/products";
 const banglaDigits = (value) => String(value).replace(/\d/g, (digit) => "০১২৩৪৫৬৭৮৯"[digit]);
 const formatPrice = (price) => new Intl.NumberFormat("en-IN").format(price).replace(/\d/g, (digit) => "০১২৩৪৫৬৭৮৯"[digit]);
 const getUnit = (unit) => {
@@ -39,7 +40,7 @@ export default function Navbar() {
         const startedAt = Date.now();
         const fetchCategories = async () => {
             try {
-                const response = await fetch(CATEGORIES_API);
+                const response = await fetchBazardor(CATEGORIES_API);
                 if (!response.ok) throw new Error("Failed to fetch categories");
                 setCategories(await response.json());
             } catch (error) {
@@ -56,7 +57,7 @@ export default function Navbar() {
         const startedAt = Date.now();
         const fetchProducts = async () => {
             try {
-                const response = await fetch(PRODUCTS_API);
+                const response = await fetchBazardor(PRODUCTS_API);
                 if (!response.ok) throw new Error("Failed to fetch products");
                 setProducts(await response.json());
             } catch (error) {

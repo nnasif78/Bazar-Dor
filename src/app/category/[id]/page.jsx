@@ -6,6 +6,7 @@ import Link from "next/link";
 import { showToast } from "@/lib/toast";
 import ProductCardSkeleton, { LoadingLabel } from "@/components/ProductCardSkeleton";
 import { waitForMinimumSkeleton } from "@/lib/loading";
+import { fetchBazardor } from "@/lib/bazardor-api";
 
 function CategoryPageContent() {
     const { id } = useParams();
@@ -27,8 +28,8 @@ function CategoryPageContent() {
 
             try {
                 const [productsRes, categoriesRes] = await Promise.all([
-                    fetch(`https://api.api-store.workers.dev/api/bazardor/products?category=${id}`),
-                    fetch(`https://api.api-store.workers.dev/api/bazardor/categories/${id}`)
+                    fetchBazardor(`/products?category=${encodeURIComponent(id)}`),
+                    fetchBazardor(`/categories/${encodeURIComponent(id)}`)
                 ]);
 
                 if (productsRes.status === 404 || categoriesRes.status === 404) {

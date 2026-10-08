@@ -5,6 +5,7 @@ import Link from "next/link";
 import ProductCardSkeleton, { LoadingLabel } from "@/components/ProductCardSkeleton";
 import { showToast } from "@/lib/toast";
 import { waitForMinimumSkeleton } from "@/lib/loading";
+import { fetchBazardor } from "@/lib/bazardor-api";
 
 const banglaDigits = value => String(value).replace(/\d/g, digit => "০১২৩৪৫৬৭৮৯"[digit]);
 const banglaPrice = value => banglaDigits(new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 }).format(Number(value)));
@@ -15,7 +16,7 @@ export default function PriceDecreased() {
 
     useEffect(() => {
         const startedAt = Date.now();
-        fetch("https://api.api-store.workers.dev/api/bazardor/products")
+        fetchBazardor("/products")
             .then(res => {
                 if (!res.ok) throw new Error("Failed to fetch products");
                 return res.json();

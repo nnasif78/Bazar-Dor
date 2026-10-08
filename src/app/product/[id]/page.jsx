@@ -7,6 +7,7 @@ import { useSession } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
 import { LoadingLabel } from "@/components/ProductCardSkeleton";
 import { waitForMinimumSkeleton } from "@/lib/loading";
+import { fetchBazardor } from "@/lib/bazardor-api";
 
 function ProductDetailsContent() {
     const { id } = useParams();
@@ -36,8 +37,8 @@ function ProductDetailsContent() {
             const startedAt = Date.now();
             try {
                 const [productResult, categoriesResult] = await Promise.allSettled([
-                    fetch(`https://api.api-store.workers.dev/api/bazardor/products/${id}`),
-                    fetch("https://api.api-store.workers.dev/api/bazardor/categories")
+                    fetchBazardor(`/products/${encodeURIComponent(id)}`),
+                    fetchBazardor("/categories")
                 ]);
                 if (productResult.status === "rejected") throw productResult.reason;
 
