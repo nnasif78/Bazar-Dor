@@ -134,10 +134,18 @@ function ProductDetailsContent() {
     return (
         <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-10">
             <div className="mx-auto max-w-6xl">
-                <div className="mb-5 text-[14px] text-[#6B7280]">
-                    <span>হোম</span><span className="mx-2">›</span>
-                    <span>{product.categoryNameBn}</span><span className="mx-2">›</span>
-                    <span>{product.nameBn}</span>
+                <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-x-2 text-[14px] text-[#6B7280]">
+                    <Link href="/" className="rounded-sm transition-colors hover:text-[#047F39] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#047F39]">
+                        হোম
+                    </Link>
+                    <span aria-hidden="true">›</span>
+                    <Link href={`/category/${product.categoryId}`} className="rounded-sm transition-colors hover:text-[#047F39] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#047F39]">
+                        {product.categoryNameBn}
+                    </Link>
+                    <span aria-hidden="true">›</span>
+                    <Link href={`/product/${product.id}`} aria-current="page" className="rounded-sm font-medium text-[#111827] transition-colors hover:text-[#047F39] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#047F39]">
+                        {product.nameBn}
+                    </Link>
                 </div>
                 <div className="flex flex-col gap-6 rounded-2xl border border-[#E5E7EB] bg-white p-6 md:flex-row md:items-center md:justify-between">
                     <div className="flex items-center gap-4">
