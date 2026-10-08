@@ -1,159 +1,175 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Link, Button } from "@heroui/react";
-import { authClient } from "@/lib/auth-client";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession, signOut } from "@/lib/auth-client";
 
+const CATEGORIES_API = "https://api.api-store.workers.dev/api/bazardor/categories";
+const PRODUCTS_API = "https://api.api-store.workers.dev/api/bazardor/products";
+const banglaDigits = (value) => String(value).replace(/\d/g, (digit) => "০১২৩৪৫৬৭৮৯"[digit]);
+const formatPrice = (price) => new Intl.NumberFormat("en-IN").format(price).replace(/\d/g, (digit) => "০১২৩৪৫৬৭৮৯"[digit]);
+const getUnit = (unit) => {
+    const units = { kg: "কেজি", liter: "লিটার", litre: "লিটার", dozen: "ডজন", piece: "পিস", pcs: "পিস" };
+    return units[unit] || unit;
+};
 export default function Navbar() {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const pathname = usePathname();
     const router = useRouter();
+    const { data: session, isPending } = useSession();
+    const [date, setDate] = useState("");
+    const [categories, setCategories] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [profileOpen, setProfileOpen] = useState(false);
+    const profileRef = useRef(null);
 
-    const { data: session } = authClient.useSession();
+    useEffect(() => {
+        const now = new Date();
+        const weekdays = ["রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার"];
+        const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
 
-    const handleLogout = async () => {
-        try {
-            const result = await authClient.signOut({
-                fetchOptions: {
-                    onSuccess: () => {
-                        setIsMenuOpen(false);
-                        router.push("/sign-in");
-                    },
-                    onError: (ctx) => {
-                        console.error("Logout failed:", ctx.error);
-                    },
-                },
-            });
+        setDate(`${weekdays[now.getDay()]}, ${banglaDigits(now.getDate())} ${months[now.getMonth()]}, ${banglaDigits(now.getFullYear())}`);
+    }, []);
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch(CATEGORIES_API);
+                if (!response.ok) throw new Error("Failed to fetch categories");
+                setCategories(await response.json());
+            } catch (error) {
+                console.error("Category fetch error:", error);
+            }
+        };
 
-            console.log("Logout result:", result);
-        } catch (error) {
-            console.error("Logout error:", error);
-        }
+        fetchCategories();
+    }, []);
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch(PRODUCTS_API);
+                if (!response.ok) throw new Error("Failed to fetch products");
+                setProducts(await response.json());
+            } catch (error) {
+                console.error("Product fetch error:", error);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (profileRef.current && !profileRef.current.contains(event.target)) setProfileOpen(false);
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+    const tickerProducts = useMemo(() => [...products, ...products], [products]);
+    const handleSignOut = async () => {
+        await signOut({ fetchOptions: { onSuccess: () => { setProfileOpen(false); router.push("/"); } } });
     };
-
+    const isLoggedIn = Boolean(session?.user);
     return (
-        <nav className="sticky top-0 z-40 w-full border-b border-separator bg-background/70 backdrop-blur-lg">
-            <header className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-                <div className="flex items-center gap-4">
-                    <button
-                        className="md:hidden"
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        aria-label="Toggle menu"
-                        aria-expanded={isMenuOpen}
-                    >
-                        <span className="sr-only">Menu</span>
+        <header className="w-full bg-white">
+            <div className="h-[68px] border-b border-[#E5E7EB]">
+                <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-4">
+                    <Link href="/" className="flex items-center gap-3" aria-label="বাজার দর হোম">
+                        <Image src="/assets/logo-icon.png" alt="বাজার দর" width={40} height={40} className="h-10 w-10 rounded-lg bg-[#05893E] object-contain p-3" />
+                        <div className="flex flex-col justify-center">
+                            <span className="text-[20px] font-bold leading-[28px] text-[#111827]">বাজার দর</span>
+                            <span className="text-[12px] font-normal leading-[16px] text-[#6B7280]">{date}</span>
+                        </div>
+                    </Link>
+                    {!isPending && (
+                        !isLoggedIn ? (
+                            <div className="flex items-center gap-5">
+                                <Link href="/sign-in" className="text-[14px] font-semibold leading-[21px] text-[#111827] transition hover:text-[#047F39]">সাইন ইন</Link>
+                                <Link href="/sign-up" className="rounded-lg bg-[#047F39] px-5 py-2.5 text-[14px] font-semibold leading-[21px] text-white shadow-sm transition hover:bg-[#036B30]">সাইন আপ</Link>
+                            </div>
+                        ):(
+                            <div ref={profileRef} className="relative">
+                                <button type="button" onClick={() => setProfileOpen((previous) => !previous)} className="flex items-center gap-2">
+                                    {session.user.image ? (
+                                        <Image src={session.user.image} alt={session.user.name || "Profile"} width={36} height={36} className="h-9 w-9 rounded-full object-cover" />
+                                    ) : (
+                                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#047F39] text-sm font-semibold text-white">{session.user.name?.charAt(0)?.toUpperCase() || "U"}</div>
+                                    )}
+                                    <span className="max-w-[120px] truncate text-[14px] font-medium leading-[21px] text-[#111827]">{session.user.name}</span>
+                                    <span className={`text-xs text-[#111827] transition-transform ${profileOpen ? "rotate-180" : ""}`}>▼</span>
+                                </button>
+                                {profileOpen && (
+                                    <div className="absolute right-0 top-[48px] z-50 w-64 rounded-xl border border-[#E5E7EB] bg-white p-4 shadow-lg">
+                                        <div className="border-b border-[#E5E7EB] pb-3">
+                                            <p className="truncate text-[14px] font-semibold leading-[20px] text-[#111827]">{session.user.name}</p>
+                                            <p className="mt-0.5 truncate text-[12px] font-normal leading-[18px] text-[#6B7280]">{session.user.email}</p>
+                                        </div>
 
-                        <svg
-                            className="h-6 w-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            {isMenuOpen ? (
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            ) : (
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 6h16M4 12h16M4 18h16"
-                                />
-                            )}
-                        </svg>
-                    </button>
+                                        <div className="pt-2">
+                                            <Link href="/profile" onClick={() => setProfileOpen(false)} className="flex items-center gap-2 rounded-md px-2 py-2 text-[14px] font-normal leading-[21px] text-[#111827] transition hover:bg-[#F3F4F6]">
+                                                <span>👤</span><span>আমার প্রোফাইল</span>
+                                            </Link>
+                                            <button type="button" onClick={handleSignOut} className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[14px] font-normal leading-[21px] text-red-500 transition hover:bg-red-50">
+                                                <span>↩</span><span>সাইন আউট</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )
+                    )}
+                </div>
+            </div>
+            <div className="h-[49px] border-b border-[#E5E7EB]">
+                <div className="scrollbar-hide mx-auto flex h-full max-w-6xl items-center overflow-x-auto px-4">
+                    <div className="flex min-w-max items-center gap-7">
+                        <Link href="/" className={`flex h-[49px] items-center gap-1.5 border-b-2 px-1 text-[12px] font-semibold leading-[17.1px] transition ${pathname === "/" ? "border-[#047F39] text-[#047F39]" : "border-transparent text-[#374151] hover:text-[#047F39]"}`}>
+                            <span className="text-[16px] leading-none text-[#111827]">🏠</span><span>সব</span>
+                        </Link>
+                        {categories.map((category) => {
+                            const active = pathname === `/category/${category.slug}`;
 
-                    <div className="flex items-center gap-3">
-                        <p className="font-bold">ACME</p>
+                            return (
+                                <Link key={category.id} href={`/category/${category.slug}`} className={`flex h-[49px] items-center gap-1.5 border-b-2 px-1 text-[12px] font-semibold leading-[17.1px] transition ${active ? "border-[#047F39] text-[#047F39]" : "border-transparent text-[#374151] hover:text-[#047F39]"}`}>
+                                    <span className="text-[16px] leading-none font-['Segoe_UI_Emoji'] text-[#111827]">{category.slug === "dal" ? "🫘" : category.icon}</span>
+                                    <span>{category.nameBn}</span>
+                                </Link>
+                            );
+                        })}
                     </div>
                 </div>
+            </div>
+            <div className="h-16 overflow-hidden border-b border-[#E5E7EB] bg-[#F8FAF9]">
+                {products.length > 0 ? (
+                    <div className="flex h-full w-max items-center">
+                        <div className="bazar-marquee flex h-full items-center gap-8">
+                            {tickerProducts.map((product, index) => {
+                                const isDown = product.change?.dir === "down";
+                                const isUp = product.change?.dir === "up";
 
-                <ul className="hidden items-center gap-4 md:flex">
-                    <li>
-                        <Link href="#">Features</Link>
-                    </li>
-
-                    <li>
-                        <Link
-                            href="#"
-                            className="font-medium text-accent"
-                            aria-current="page"
-                        >
-                            Dashboard
-                        </Link>
-                    </li>
-
-                    <li>
-                            {
-                                session?.user && <li>
-                            <Link href="/profile" className="block py-2">
-                                Profile
-                               
-                            </Link>
-                             </li>
-                            }
-                        </li>
-                </ul>
-
-                {session?.user ? (
-                    <Button
-                        onPress={handleLogout}
-                        className="bg-red-500 px-5 py-2 font-semibold text-white hover:bg-red-600"
-                    >
-                        Logout
-                    </Button>
+                                return (
+                                    <Link key={`${product.id}-${index}`} href={`/product/${product.slug}`} className="flex shrink-0 items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-70">
+                                        <span className="text-[18px] leading-none font-['Segoe_UI_Emoji'] text-[#111827]">{product.category === "dal" ? "🫘" : product.image || product.categoryIcon}</span>
+                                        <span className="text-[14px] font-medium leading-5 text-[#111827]">{product.nameBn}</span>
+                                        <span className="text-[14px] font-normal leading-5 text-[#374151]">{formatPrice(product.today)} টাকা/{getUnit(product.unit)}</span>
+                                        {isUp && <span className="text-[14px] font-semibold leading-5 text-[#047F39]">▲ {formatPrice(product.change.pct)}%</span>}
+                                        {isDown && <span className="text-[14px] font-semibold leading-5 text-[#DC2626]">▼ {formatPrice(product.change.pct)}%</span>}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </div>
                 ) : (
-                    <div className="hidden items-center gap-4 md:flex">
-                        <Link href="/sign-in">Login</Link>
-
-                        <Link href="/sign-up">
-                            <Button>Sign Up</Button>
-                        </Link>
-                    </div>
+                    <div className="flex h-full items-center justify-center text-sm text-gray-400">দাম লোড হচ্ছে...</div>
                 )}
-            </header>
-
-            {isMenuOpen && (
-                <div className="border-t border-separator md:hidden">
-                    <ul className="flex flex-col gap-2 p-4">
-                        <li>
-                            <Link href="#" className="block py-2">
-                                Features
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link href="#" className="block py-2 font-medium text-accent">
-                                Dashboard
-                            </Link>
-                        </li>
-
-                        
-
-                        <li className="mt-4 flex flex-col gap-2 border-t border-separator pt-4">
-                            {session?.user ? (
-                                <Button onPress={handleLogout} className="w-full">
-                                    Logout
-                                </Button>
-                            ) : (
-                                <>
-                                    <Link href="/sign-in" className="block py-2">
-                                        Login
-                                    </Link>
-
-                                    <Link href="/sign-up">
-                                        <Button className="w-full">Sign Up</Button>
-                                    </Link>
-                                </>
-                            )}
-                        </li>
-                    </ul>
-                </div>
-            )}
-        </nav>
+            </div>
+            <style jsx>{`
+                .bazar-marquee { animation: bazar-marquee 35s linear infinite; }
+                .bazar-marquee:hover { animation-play-state: paused; }
+                @keyframes bazar-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+                .scrollbar-hide::-webkit-scrollbar { display: none; }
+                .scrollbar-hide { scrollbar-width: none; }
+            `}</style>
+        </header>
     );
 }
