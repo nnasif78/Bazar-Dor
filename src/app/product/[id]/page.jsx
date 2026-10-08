@@ -33,7 +33,13 @@ function ProductDetailsContent() {
 
         const fetchProduct = async () => {
             try {
-                const response = await fetch(`https://api.api-store.workers.dev/api/bazardor/products/${id}`);
+                const [productResult, categoriesResult] = await Promise.allSettled([
+                    fetch(`https://api.api-store.workers.dev/api/bazardor/products/${id}`),
+                    fetch("https://api.api-store.workers.dev/api/bazardor/categories")
+                ]);
+                if (productResult.status === "rejected") throw productResult.reason;
+
+                const response = productResult.value;
                 if (response.status === 404) {
                     setProductNotFound(true);
                     return;
@@ -45,7 +51,32 @@ function ProductDetailsContent() {
                     setProductNotFound(true);
                     return;
                 }
-                setProduct(data);
+
+                let categories = [];
+                if (categoriesResult.status === "fulfilled" && categoriesResult.value.ok) {
+                    try {
+                        const categoryData = await categoriesResult.value.json();
+                        categories = Array.isArray(categoryData)
+                            ? categoryData
+                            : Array.isArray(categoryData?.categories)
+                                ? categoryData.categories
+                                : categoryData?.id
+                                    ? [categoryData]
+                                    : [];
+                    } catch {
+                        // Product details can still render if the category response is malformed.
+                    }
+                }
+
+                const productCategory = data.categoryId
+                    ?? (typeof data.category === "string" ? data.category : data.category?.id ?? data.category?.slug)
+                    ?? null;
+                const matchedCategory = categories.find(category =>
+                    category.id === productCategory
+                    || category.slug === productCategory
+                    || category.nameBn === data.categoryNameBn
+                );
+                setProduct({ ...data, categoryId: matchedCategory?.id ?? productCategory });
             } catch (error) {
                 console.error(error);
                 setLoadError(true);
@@ -139,9 +170,13 @@ function ProductDetailsContent() {
                         হোম
                     </Link>
                     <span aria-hidden="true">›</span>
-                    <Link href={`/category/${product.categoryId}`} className="rounded-sm transition-colors hover:text-[#047F39] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#047F39]">
-                        {product.categoryNameBn}
-                    </Link>
+                    {product.categoryId ? (
+                        <Link href={`/category/${product.categoryId}`} className="rounded-sm transition-colors hover:text-[#047F39] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#047F39]">
+                            {product.categoryNameBn}
+                        </Link>
+                    ) : (
+                        <span>{product.categoryNameBn}</span>
+                    )}
                     <span aria-hidden="true">›</span>
                     <Link href={`/product/${product.id}`} aria-current="page" className="rounded-sm font-medium text-[#111827] transition-colors hover:text-[#047F39] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#047F39]">
                         {product.nameBn}
