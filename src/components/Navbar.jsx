@@ -131,15 +131,15 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
-            <div className="h-16 overflow-hidden border-b border-[#E5E7EB] bg-[#F8FAF9]">
+            <div className="group h-16 overflow-hidden border-b border-[#E5E7EB] bg-[#F8FAF9]">
                 {products.length > 0 ? (
-                    <div className="bazar-marquee flex h-full w-max items-center gap-8">
+                    <div className="bazar-marquee flex h-full w-max items-center gap-8 group-hover:[animation-play-state:paused]">
                         {tickerProducts.map((product, index) => {
                             const isDown = product.change?.dir === "down";
                             const isUp = product.change?.dir === "up";
 
                             return (
-                                <Link key={`${product.id}-${index}`} href={`/product/${product.id}`} className="flex shrink-0 items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-70">
+                                <Link key={`${product.id}-${index}`} href={`/product/${product.id}`} className="flex shrink-0 items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-70 ">
                                     <span className="text-[18px] leading-none font-['Segoe_UI_Emoji'] text-[#111827]">{product.image || product.categoryIcon}</span>
                                     <span className="text-[14px] font-medium leading-5 text-[#111827]">{product.nameBn}</span>
                                     <span className="text-[14px] font-normal leading-5 text-[#374151]">{formatPrice(product.today)} টাকা/{getUnit(product.unit)}</span>

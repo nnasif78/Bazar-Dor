@@ -50,3 +50,11 @@
 .Toastify__progress-bar {
     visibility: hidden !important;
 }
+.bazar-marquee {
+    animation: bazar-marquee 20s linear infinite;
+    width: max-content;
+}
+
+.group:hover .bazar-marquee {
+    animation-play-state: paused !important;
+}
