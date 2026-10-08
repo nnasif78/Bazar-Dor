@@ -96,7 +96,7 @@ export default function Profile() {
                         </div>
                     </div>
                     <Button onPress={() => signOut({ fetchOptions: { onSuccess: () => showToast.success("সাইন আউট সফল হয়েছে।") } })} className="flex w-full max-w-40 items-center justify-center gap-2 rounded-lg border border-[#FCA5A5] bg-white px-4 text-[14px] font-semibold text-[#DC2626] hover:bg-[#FEF2F2] sm:w-auto">
-                        <span aria-hidden="true" className="inline-block h-[18px] w-[18px] shrink-0 bg-[#cc3333] [mask-image:url('/image_c35a23.png')] [mask-size:contain] [mask-repeat:no-repeat] [-webkit-mask-image:url('/image_c35a23.png')] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat]" />
+                        <span aria-hidden="true" className="inline-block h-[18px] w-[18px] shrink-0 bg-[#cc3333] [mask-image:url('/assets/logout.png')] [mask-size:contain] [mask-repeat:no-repeat] [-webkit-mask-image:url('/assets/logout.png')] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat]" />
                         <span>সাইন আউট</span>
                     </Button>
                 </div>
