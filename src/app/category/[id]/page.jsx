@@ -12,24 +12,44 @@ function CategoryPageContent() {
     const [category, setCategory] = useState(null);
     const [sort, setSort] = useState("default");
     const [loading, setLoading] = useState(true);
+    const [notFound, setNotFound] = useState(false);
+    const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
         if (!id) return;
 
         const fetchData = async () => {
+            setLoading(true);
+            setNotFound(false);
+            setLoadError(false);
+
             try {
                 const [productsRes, categoriesRes] = await Promise.all([
                     fetch(`https://api.api-store.workers.dev/api/bazardor/products?category=${id}`),
                     fetch(`https://api.api-store.workers.dev/api/bazardor/categories/${id}`)
                 ]);
 
+                if (productsRes.status === 404 || categoriesRes.status === 404) {
+                    setNotFound(true);
+                    return;
+                }
+                if (!productsRes.ok || !categoriesRes.ok) {
+                    throw new Error("Category request failed");
+                }
+
                 const productsData = await productsRes.json();
                 const categoryData = await categoriesRes.json();
+
+                if (!categoryData?.nameBn || !Array.isArray(productsData) || productsData.length === 0) {
+                    setNotFound(true);
+                    return;
+                }
 
                 setProducts(productsData);
                 setCategory(categoryData);
             } catch (error) {
                 console.error(error);
+                setLoadError(true);
                 showToast.error("পণ্যের তথ্য লোড করতে সমস্যা হয়েছে।");
             } finally {
                 setLoading(false);
@@ -75,6 +95,27 @@ function CategoryPageContent() {
                     <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         <ProductCardSkeleton dense />
                     </div>
+                </div>
+            </main>
+        );
+    }
+
+    if (notFound || loadError) {
+        return (
+            <main className="flex min-h-[calc(100vh-68px)] items-center justify-center bg-[#F0F5F0] px-4 py-10">
+                <div className="w-full max-w-lg rounded-3xl border border-[#E5E7EB] bg-white px-6 py-12 text-center shadow-sm">
+                    <div className="text-5xl" aria-hidden="true">{loadError ? "⚠️" : "🔎"}</div>
+                    <h1 className="mt-4 text-2xl font-bold text-[#111827]">
+                        {loadError ? "তথ্য লোড করা যায়নি" : "ক্যাটাগরি পাওয়া যায়নি"}
+                    </h1>
+                    <p className="mt-2 text-sm text-[#6B7280]">
+                        {loadError
+                            ? "আবার চেষ্টা করুন, অথবা হোম পেজে ফিরে যান।"
+                            : "এই ক্যাটাগরিতে কোনো পণ্য নেই, অথবা ক্যাটাগরিটি সঠিক নয়।"}
+                    </p>
+                    <Link href="/" className="mt-6 inline-flex h-11 items-center rounded-lg bg-[#047F39] px-5 text-sm font-bold text-white hover:bg-[#036B30]">
+                        হোম পেজে ফিরে যান
+                    </Link>
                 </div>
             </main>
         );

@@ -159,7 +159,7 @@ export default function Navbar() {
                                         {isUp && <span className="text-[14px] font-semibold leading-5 text-[#DC2626]">▲ {formatPrice(product.change.pct)}%</span>}
                                         {isDown && <span className="text-[14px] font-semibold leading-5 text-[#047F39]">▼ {formatPrice(product.change.pct)}%</span>}
                                     </Link>
-                                    <span aria-hidden="true" className="h-px w-6 shrink-0 bg-[#D1D5DB]" />
+                                    <span aria-hidden="true" className="h-6 w-px shrink-0 bg-[#D1D5DB]" />
                                 </div>
                             );
                         })}

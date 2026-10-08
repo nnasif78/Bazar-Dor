@@ -1,25 +1,38 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useSession } from "@/lib/auth-client";
+import { showToast } from "@/lib/toast";
 import { LoadingLabel } from "@/components/ProductCardSkeleton";
 
 function ProductDetailsContent() {
     const { id } = useParams();
+    const router = useRouter();
+    const { data: session, isPending } = useSession();
     const [product, setProduct] = useState(null);
+    const signInRedirectHandled = useRef(false);
 
     useEffect(() => {
-        if (id) {
+        if (!isPending && !session?.user && !signInRedirectHandled.current) {
+            signInRedirectHandled.current = true;
+            showToast.alert("পণ্যের বিস্তারিত দেখতে আগে সাইন ইন করুন।");
+            router.replace("/sign-in");
+        }
+    }, [isPending, session, router]);
+
+    useEffect(() => {
+        if (session?.user && id) {
             fetch(`https://api.api-store.workers.dev/api/bazardor/products/${id}`)
                 .then(res => res.json())
                 .then(data => setProduct(data));
         }
-    }, [id]);
+    }, [session, id]);
 
     const banglaNumber = value => Number(value).toFixed(1).replace(/\d/g, digit => "০১২৩৪৫৬৭৮৯"[digit]);
     const unit = value => value === "kg" ? "কেজি" : value === "dozen" ? "ডজন" : value === "litre" ? "লিটার" : "পিস";
 
-    if (!product) {
+    if (isPending || !session?.user || !product) {
         return (
             <main className="min-h-[calc(100vh-68px)] animate-pulse bg-[#F0F5F0] px-4 py-10">
                 <div className="mx-auto max-w-6xl">
@@ -80,7 +93,10 @@ function ProductDetailsContent() {
                         </div>
                         <div>
                             <h1 className="text-[26px] font-bold text-[#111827]">{product.nameBn}</h1>
-                            <p className="mt-1 text-[14px] text-[#6B7280]">প্রতি {unit(product.unit)} · {product.categoryNameBn}</p>
+                            <p className="mt-1 text-[14px] text-[#6B7280]">প্রতি {unit(product.unit)}</p>
+                            <span className="mt-2 inline-flex rounded-full bg-[#E8F5EC] px-3 py-1 text-[12px] font-semibold text-[#047F39]">
+                                {product.categoryNameBn}
+                            </span>
                             <p className="mt-2 text-[14px] text-[#374151]">
                                 গতকালের তুলনায় আজ দাম{" "}
                                 <span className="font-bold">
@@ -155,7 +171,7 @@ function ProductDetailsContent() {
                         <div className="overflow-x-auto">
                             <table className="w-full min-w-[700px] text-left">
                                 <thead className="bg-white">
-                                    <tr className="border-b border-[#D1D5DB]">
+                                    <tr className="border-b border-[#111827]">
                                         <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">বাজার</th>
                                         <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">বিভাগ</th>
                                         <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">সর্বনিম্ন</th>
