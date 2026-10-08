@@ -1,2 +1,16 @@
 @import "tailwindcss";
 @import "@heroui/styles"; 
+
+@keyframes bazar-marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.bazar-marquee {
+    animation: bazar-marquee 20s linear infinite;
+    width: max-content;
+}

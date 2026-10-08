@@ -154,13 +154,6 @@ export default function Navbar() {
                     <div className="flex h-full items-center justify-center text-sm text-gray-400">দাম লোড হচ্ছে...</div>
                 )}
             </div>
-            <style jsx>{`
-                .bazar-marquee { animation: bazar-marquee 35s linear infinite; }
-                .bazar-marquee:hover { animation-play-state: paused; }
-                @keyframes bazar-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-                .scrollbar-hide::-webkit-scrollbar { display: none; }
-                .scrollbar-hide { scrollbar-width: none; }
-            `}</style>
         </header>
     );
 }
