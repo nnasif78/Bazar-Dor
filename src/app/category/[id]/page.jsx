@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { showToast } from "@/lib/toast";
 import ProductCardSkeleton, { LoadingLabel } from "@/components/ProductCardSkeleton";
+import { waitForMinimumSkeleton } from "@/lib/loading";
 
 function CategoryPageContent() {
     const { id } = useParams();
@@ -19,6 +20,7 @@ function CategoryPageContent() {
         if (!id) return;
 
         const fetchData = async () => {
+            const startedAt = Date.now();
             setLoading(true);
             setNotFound(false);
             setLoadError(false);
@@ -49,8 +51,9 @@ function CategoryPageContent() {
                 setCategory(categoryData);
             } catch (error) {
                 console.error(error);
+                await waitForMinimumSkeleton(startedAt);
                 setLoadError(true);
-                showToast.error("পণ্যের তথ্য লোড করতে সমস্যা হয়েছে।");
+                showToast.error("তথ্য লোড করা যায়নি। আবার চেষ্টা করুন।");
             } finally {
                 setLoading(false);
             }

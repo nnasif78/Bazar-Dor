@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
 import { LoadingLabel } from "@/components/ProductCardSkeleton";
+import { waitForMinimumSkeleton } from "@/lib/loading";
 
 function ProductDetailsContent() {
     const { id } = useParams();
@@ -32,6 +33,7 @@ function ProductDetailsContent() {
         setLoadError(false);
 
         const fetchProduct = async () => {
+            const startedAt = Date.now();
             try {
                 const [productResult, categoriesResult] = await Promise.allSettled([
                     fetch(`https://api.api-store.workers.dev/api/bazardor/products/${id}`),
@@ -79,8 +81,9 @@ function ProductDetailsContent() {
                 setProduct({ ...data, categoryId: matchedCategory?.id ?? productCategory });
             } catch (error) {
                 console.error(error);
+                await waitForMinimumSkeleton(startedAt);
                 setLoadError(true);
-                showToast.error("পণ্যের তথ্য লোড করতে সমস্যা হয়েছে।");
+                showToast.error("পণ্যের তথ্য লোড করা যায়নি। আবার চেষ্টা করুন।");
             }
         };
 

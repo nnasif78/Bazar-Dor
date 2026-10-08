@@ -3,16 +3,26 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ProductCardSkeleton, { LoadingLabel } from "@/components/ProductCardSkeleton";
+import { showToast } from "@/lib/toast";
+import { waitForMinimumSkeleton } from "@/lib/loading";
 
 export default function AllProducts() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const startedAt = Date.now();
         fetch("https://api.api-store.workers.dev/api/bazardor/products")
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to fetch products");
+                return res.json();
+            })
             .then(data => setProducts(data))
-            .catch(error => console.error(error))
+            .catch(async error => {
+                console.error(error);
+                await waitForMinimumSkeleton(startedAt);
+                showToast.error("পণ্য লোড করা যায়নি। আবার চেষ্টা করুন।");
+            })
             .finally(() => setLoading(false));
     }, []);
 

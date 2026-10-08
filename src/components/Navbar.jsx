@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
 import { LoadingLabel } from "@/components/ProductCardSkeleton";
+import { waitForMinimumSkeleton } from "@/lib/loading";
 
 const CATEGORIES_API = "https://api.api-store.workers.dev/api/bazardor/categories";
 const PRODUCTS_API = "https://api.api-store.workers.dev/api/bazardor/products";
@@ -35,6 +36,7 @@ export default function Navbar() {
         setDate(`${weekdays[now.getDay()]}, ${banglaDigits(now.getDate())} ${months[now.getMonth()]}, ${banglaDigits(now.getFullYear())}`);
     }, []);
     useEffect(() => {
+        const startedAt = Date.now();
         const fetchCategories = async () => {
             try {
                 const response = await fetch(CATEGORIES_API);
@@ -42,6 +44,8 @@ export default function Navbar() {
                 setCategories(await response.json());
             } catch (error) {
                 console.error("Category fetch error:", error);
+                await waitForMinimumSkeleton(startedAt);
+                showToast.error("ক্যাটাগরি লোড করা যায়নি। আবার চেষ্টা করুন।");
             } finally {
                 setCategoriesLoading(false);
             }
@@ -49,6 +53,7 @@ export default function Navbar() {
         fetchCategories();
     }, []);
     useEffect(() => {
+        const startedAt = Date.now();
         const fetchProducts = async () => {
             try {
                 const response = await fetch(PRODUCTS_API);
@@ -56,6 +61,8 @@ export default function Navbar() {
                 setProducts(await response.json());
             } catch (error) {
                 console.error("Product fetch error:", error);
+                await waitForMinimumSkeleton(startedAt);
+                showToast.error("পণ্যের তথ্য লোড করা যায়নি। আবার চেষ্টা করুন।");
             } finally {
                 setProductsLoading(false);
             }
