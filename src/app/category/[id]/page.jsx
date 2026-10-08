@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { showToast } from "@/lib/toast";
+import ProductCardSkeleton, { LoadingLabel } from "@/components/ProductCardSkeleton";
 
 function CategoryPageContent() {
     const { id } = useParams();
@@ -66,7 +67,16 @@ function CategoryPageContent() {
 
     if (loading) {
         return (
-            <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-10" />
+            <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-10">
+                <div className="mx-auto max-w-6xl">
+                    <LoadingLabel className="mb-5" />
+                    <div aria-hidden="true" className="skeleton-shimmer h-28 rounded-3xl border border-[#E5E7EB] bg-white" />
+                    <div aria-hidden="true" className="skeleton-shimmer mt-5 h-16 rounded-3xl border border-[#E5E7EB] bg-white" />
+                    <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <ProductCardSkeleton dense />
+                    </div>
+                </div>
+            </main>
         );
     }
 
@@ -171,14 +181,13 @@ function CategoryPageContent() {
 
 function CategoryPageLoading() {
     return (
-        <main className="min-h-[calc(100vh-68px)] animate-pulse bg-[#F0F5F0] px-4 py-10">
+        <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-10">
             <div className="mx-auto max-w-6xl">
-                <div className="h-28 rounded-3xl border border-[#E5E7EB] bg-white" />
-                <div className="mt-5 h-16 rounded-3xl border border-[#E5E7EB] bg-white" />
+                <LoadingLabel className="mb-5" />
+                <div aria-hidden="true" className="skeleton-shimmer h-28 rounded-3xl border border-[#E5E7EB] bg-white" />
+                <div aria-hidden="true" className="skeleton-shimmer mt-5 h-16 rounded-3xl border border-[#E5E7EB] bg-white" />
                 <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {[...Array(6)].map((_, index) => (
-                        <div key={index} className="h-[140px] rounded-2xl bg-white" />
-                    ))}
+                    <ProductCardSkeleton count={6} dense />
                 </div>
             </div>
         </main>

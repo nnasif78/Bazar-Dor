@@ -5,10 +5,24 @@ import Image from "next/image";
 import { Button, Form, Input, Label, TextField } from "@heroui/react";
 import { authClient, signOut, useSession } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
+import { LoadingLabel } from "@/components/ProductCardSkeleton";
 
 export default function Profile() {
     const { data: session, isPending } = useSession(), [name, setName] = useState("");
-    if (isPending) return <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] p-8" />;
+    if (isPending) return (
+        <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-10">
+            <div className="mx-auto mt-20 max-w-4xl">
+                <LoadingLabel className="mb-5" />
+                <div aria-hidden="true" className="skeleton-shimmer h-16 w-52 rounded bg-[#E4EDE4]" />
+                <div className="skeleton-shimmer mt-7 h-28 rounded-2xl border border-[#E5E7EB] bg-white" />
+                <div className="mt-5 rounded-2xl border border-[#E5E7EB] bg-white p-6">
+                    <div aria-hidden="true" className="skeleton-shimmer h-6 w-24 rounded bg-[#E4EDE4]" />
+                    <div aria-hidden="true" className="skeleton-shimmer mx-auto mt-5 h-10 max-w-xl rounded-lg bg-[#E4EDE4]" />
+                    <div aria-hidden="true" className="skeleton-shimmer mx-auto mt-4 h-10 max-w-xl rounded-lg bg-[#E4EDE4]" />
+                </div>
+            </div>
+        </main>
+    );
     if (!session?.user) return null;
     const user = session.user, updateProfile = async e => { e.preventDefault(); const { error } = await authClient.updateUser({ name }); if (error) showToast.error(error.message || "প্রোফাইল আপডেট করতে সমস্যা হয়েছে।"); else { setName(""); showToast.success("প্রোফাইল সফলভাবে আপডেট হয়েছে।"); } };
 

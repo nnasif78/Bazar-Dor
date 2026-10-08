@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
+import { LoadingLabel } from "@/components/ProductCardSkeleton";
 
 const CATEGORIES_API = "https://api.api-store.workers.dev/api/bazardor/categories";
 const PRODUCTS_API = "https://api.api-store.workers.dev/api/bazardor/products";
@@ -22,6 +23,8 @@ export default function Navbar() {
     const [date, setDate] = useState("");
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
+    const [categoriesLoading, setCategoriesLoading] = useState(true);
+    const [productsLoading, setProductsLoading] = useState(true);
     const [profileOpen, setProfileOpen] = useState(false);
     const profileRef = useRef(null);
 
@@ -39,6 +42,8 @@ export default function Navbar() {
                 setCategories(await response.json());
             } catch (error) {
                 console.error("Category fetch error:", error);
+            } finally {
+                setCategoriesLoading(false);
             }
         };
         fetchCategories();
@@ -51,6 +56,8 @@ export default function Navbar() {
                 setProducts(await response.json());
             } catch (error) {
                 console.error("Product fetch error:", error);
+            } finally {
+                setProductsLoading(false);
             }
         };
         fetchProducts();
@@ -119,7 +126,7 @@ export default function Navbar() {
             <div className="min-h-[45px] border-b border-[#E5E7EB] sm:h-[49px]">
                 <div className="mx-auto flex max-w-6xl items-center px-4">
                     <div className="grid w-full grid-cols-4 items-center gap-x-2 sm:flex sm:gap-7">
-                        {categories.map((category) => {
+                        {categoriesLoading ? <LoadingLabel className="h-[45px] justify-center text-xs sm:h-[49px]" /> : categories.map((category) => {
                             const active = pathname === `/category/${category.id}`;
                             return (
                                 <Link key={category.id} href={`/category/${category.id}`} className={`flex h-[45px] items-center justify-center gap-1 border-b-2 px-1 text-[11px] font-semibold leading-[17.1px] transition sm:h-[49px] sm:justify-start sm:gap-1.5 sm:text-[12px] ${active ? "border-[#047F39] text-[#047F39]" : "border-transparent text-[#374151] hover:text-[#047F39]"}`}>
@@ -132,7 +139,12 @@ export default function Navbar() {
                 </div>
             </div>
             <div className="group h-16 overflow-hidden border-b border-[#E5E7EB] bg-[#F8FAF9]">
-                {products.length > 0 ? (
+                {productsLoading ? (
+                    <div className="flex h-full items-center justify-center gap-4" role="status" aria-label="Loading products">
+                        <span className="text-sm font-medium text-[#6B7280]">Loading products...</span>
+                        <span aria-hidden="true" className="skeleton-shimmer h-5 w-48 rounded bg-[#E4EDE4] sm:w-72" />
+                    </div>
+                ) : products.length > 0 ? (
                     <div className="bazar-marquee flex h-full w-max items-center gap-8 group-hover:[animation-play-state:paused]">
                         {tickerProducts.map((product, index) => {
                             const isDown = product.change?.dir === "down";

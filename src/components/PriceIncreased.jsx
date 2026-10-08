@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import ProductCardSkeleton, { LoadingLabel } from "@/components/ProductCardSkeleton";
 
 export default function PriceIncreased() {
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetch("https://api.api-store.workers.dev/api/bazardor/products")
             .then(res => res.json())
-            .then(data => setProducts(data.filter(p => p.change?.dir === "up").sort((a, b) => b.change.pct - a.change.pct).slice(0, 6)));
+            .then(data => setProducts(data.filter(p => p.change?.dir === "up").sort((a, b) => b.change.pct - a.change.pct).slice(0, 6)))
+            .catch(error => console.error(error))
+            .finally(() => setLoading(false));
     }, []);
 
     return (
@@ -19,8 +23,9 @@ export default function PriceIncreased() {
                     <span className="text-[16px] text-[#DC2626]">▲</span>আজ দাম বেড়েছে
                 </h2>
 
+                {loading && <LoadingLabel className="mb-4" />}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {products.map(product => (
+                    {loading ? <ProductCardSkeleton /> : products.map(product => (
                          <Link href={`/product/${product.id}`} key={product.id} className="block">
                         <div key={product.id} className="relative rounded-2xl border border-[#E5E7EB] bg-white p-5">
                             <div className="flex items-center gap-3">

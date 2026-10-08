@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
+import { LoadingLabel } from "@/components/ProductCardSkeleton";
 
 function ProductDetailsContent() {
     const { id } = useParams();
@@ -33,29 +34,30 @@ function ProductDetailsContent() {
         return (
             <main className="min-h-[calc(100vh-68px)] animate-pulse bg-[#F0F5F0] px-4 py-10">
                 <div className="mx-auto max-w-6xl">
-                    <div className="h-4 w-48 rounded bg-[#DDEBDD]" />
+                    <LoadingLabel className="mb-5" />
+                    <div className="skeleton-shimmer h-4 w-48 rounded bg-[#DDEBDD]" />
                     <div className="mt-5 flex flex-col gap-6 rounded-2xl border border-[#E5E7EB] bg-white p-6 md:flex-row md:items-center md:justify-between">
                         <div className="flex items-center gap-4">
-                            <div className="h-20 w-20 shrink-0 rounded-xl bg-[#F0F5F0]" />
+                            <div className="skeleton-shimmer h-20 w-20 shrink-0 rounded-xl bg-[#F0F5F0]" />
                             <div>
-                                <div className="h-7 w-48 rounded bg-[#DDEBDD]" />
-                                <div className="mt-2 h-4 w-32 rounded bg-[#E8F1E8]" />
-                                <div className="mt-3 h-4 w-64 rounded bg-[#E8F1E8]" />
+                                <div className="skeleton-shimmer h-7 w-48 rounded bg-[#DDEBDD]" />
+                                <div className="skeleton-shimmer mt-2 h-4 w-32 rounded bg-[#E8F1E8]" />
+                                <div className="skeleton-shimmer mt-3 h-4 w-64 rounded bg-[#E8F1E8]" />
                             </div>
                         </div>
-                        <div className="h-[132px] w-[117px] rounded-xl bg-[#F0F5F0]" />
+                        <div className="skeleton-shimmer h-[132px] w-[117px] rounded-xl bg-[#F0F5F0]" />
                     </div>
                     <section className="mt-8 rounded-2xl border border-[#D1D5DB] bg-white p-6">
-                        <div className="h-6 w-48 rounded bg-[#DDEBDD]" />
+                        <div className="skeleton-shimmer h-6 w-48 rounded bg-[#DDEBDD]" />
                         <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
                             {[...Array(3)].map((_, index) => (
-                                <div key={index} className="h-28 rounded-2xl bg-[#F0F5F0]" />
+                                <div key={index} className="skeleton-shimmer h-28 rounded-2xl bg-[#F0F5F0]" />
                             ))}
                         </div>
-                        <div className="mt-8 h-6 w-56 rounded bg-[#DDEBDD]" />
+                        <div className="skeleton-shimmer mt-8 h-6 w-56 rounded bg-[#DDEBDD]" />
                         <div className="mt-5 overflow-hidden rounded-2xl border border-[#D1D5DB] bg-white">
                             {[...Array(5)].map((_, index) => (
-                                <div key={index} className="h-12 border-b border-[#D1D5DB] bg-[#F0F5F0]" />
+                                <div key={index} className="skeleton-shimmer h-12 border-b border-[#D1D5DB] bg-[#F0F5F0]" />
                             ))}
                         </div>
                     </section>

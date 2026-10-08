@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import ProductCardSkeleton, { LoadingLabel } from "@/components/ProductCardSkeleton";
 
 export default function AllProducts() {
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetch("https://api.api-store.workers.dev/api/bazardor/products")
             .then(res => res.json())
-            .then(data => setProducts(data));
+            .then(data => setProducts(data))
+            .catch(error => console.error(error))
+            .finally(() => setLoading(false));
     }, []);
 
     const unit = value => value === "kg" ? "কেজি" : value === "dozen" ? "ডজন" : value === "litre" ? "লিটার" : "পিস";
@@ -22,8 +26,9 @@ export default function AllProducts() {
                     <p className="mt-1 text-[14px] text-[#6B7280]">মোট {products.length}টি পণ্য দেখানো হচ্ছে</p>
                 </div>
 
+                {loading && <LoadingLabel className="mb-4" />}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {products.map(product => {
+                    {loading ? <ProductCardSkeleton /> : products.map(product => {
                         const change = product.change?.pct || 0;
                         const direction = product.change?.dir;
 
