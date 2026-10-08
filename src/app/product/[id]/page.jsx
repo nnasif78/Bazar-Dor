@@ -146,7 +146,7 @@ function ProductDetailsContent() {
                     <Link href={`/product/${product.id}`} aria-current="page" className="rounded-sm font-medium text-[#111827] transition-colors hover:text-[#047F39] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#047F39]">
                         {product.nameBn}
                     </Link>
-                </div>
+                </nav>
                 <div className="flex flex-col gap-6 rounded-2xl border border-[#E5E7EB] bg-white p-6 md:flex-row md:items-center md:justify-between">
                     <div className="flex items-center gap-4">
                         <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-[#F0F5F0] text-[42px]">
