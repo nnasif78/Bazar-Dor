@@ -16,19 +16,26 @@ const handleGithubSignIn = async () => {
     if (error) showToast.error(error.message || "GitHub দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
 };
 
+const getSignInErrorMessage = (error) => {
+    const message = `${error?.code ?? ""} ${error?.message ?? ""}`.toLowerCase();
+    if (/invalid.*(email|password|credential)|(email|password|credential).*invalid|unauthorized|401/.test(message)) {
+        return "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়। আবার যাচাই করে চেষ্টা করুন।";
+    }
+    return "সাইন ইন করা যায়নি। ইন্টারনেট সংযোগ যাচাই করে আবার চেষ্টা করুন।";
+};
+
 const SignIn = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget), data = {};
         formData.forEach((value, key) => data[key] = value.toString());
 
-        const { data: signindata, error } = await signIn.email({
+        const { error } = await signIn.email({
             email: data.email, password: data.password, rememberMe: true, callbackURL: "/",
         });
-        console.log(signindata, error);
 
         if (error) {
-            showToast.error(error.message || "সাইন ইন করতে সমস্যা হয়েছে।");
+            showToast.error(getSignInErrorMessage(error));
             return;
         }
 

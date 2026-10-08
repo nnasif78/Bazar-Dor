@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Button, Form, Input, Label, TextField, FieldError } from "@heroui/react";
 import { signIn, signUp } from "@/lib/auth-client";
@@ -17,6 +17,7 @@ const handleGithubSignIn = async () => {
 };
 
 const SignUp = () => {
+    const [password, setPassword] = useState("");
     const onSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget), data = {};
@@ -26,13 +27,15 @@ const SignUp = () => {
             return;
         }
 
-        const { data: signupdata, error } = await signUp.email({
+        const { error } = await signUp.email({
             name: data.name, email: data.email, password: data.password, callbackURL: "/",
         });
-        console.log(signupdata, error);
 
         if (error) {
-            showToast.error(error.message || "অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে।");
+            const message = `${error.code ?? ""} ${error.message ?? ""}`.toLowerCase();
+            showToast.error(/already|exists|duplicate|unique/.test(message)
+                ? "এই ইমেইল দিয়ে আগে থেকেই অ্যাকাউন্ট আছে। সাইন ইন করুন।"
+                : "অ্যাকাউন্ট তৈরি করা যায়নি। ইমেইল ও পাসওয়ার্ড যাচাই করে আবার চেষ্টা করুন।");
             return;
         }
 
@@ -63,11 +66,11 @@ const SignUp = () => {
 
                         <TextField isRequired minLength={8} name="password" type="password" validate={(value) => value.length < 8 ? "পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে" : !/[A-Z]/.test(value) ? "পাসওয়ার্ডে অন্তত ১টি বড় হাতের অক্ষর থাকতে হবে" : !/[0-9]/.test(value) ? "পাসওয়ার্ডে অন্তত ১টি সংখ্যা থাকতে হবে" : null}>
                             <Label className="mb-1.5 text-[14px] font-semibold text-[#111827]">পাসওয়ার্ড</Label>
-                            <Input className="h-10 rounded-lg border-[#D1D5DB] px-3 text-[14px]" placeholder="কমপক্ষে ৮ অক্ষর" />
+                            <Input className="h-10 rounded-lg border-[#D1D5DB] px-3 text-[14px]" placeholder="কমপক্ষে ৮ অক্ষর" onChange={(event) => setPassword(event.target.value)} />
                             <FieldError />
                         </TextField>
 
-                        <TextField isRequired name="confirmPassword" type="password" validate={(value) => value !== document.querySelector('input[name="password"]')?.value ? "পাসওয়ার্ড মিলছে না" : null}>
+                        <TextField isRequired name="confirmPassword" type="password" validate={(value) => value !== password ? "পাসওয়ার্ড মিলছে না। আবার মিলিয়ে লিখুন।" : null}>
                             <Label className="mb-1.5 text-[14px] font-semibold text-[#111827]">পাসওয়ার্ড নিশ্চিত করুন</Label>
                             <Input className="h-10 rounded-lg border-[#D1D5DB] px-3 text-[14px]" placeholder="আবার লিখুন" />
                             <FieldError />
