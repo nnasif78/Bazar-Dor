@@ -10,8 +10,9 @@
       trustedOrigins: [
         process.env.BETTER_AUTH_URL,
     ],
-      emailAndPassword: { 
-      enabled: true, 
+      emailAndPassword: {
+      enabled: true,
+      autoSignIn: false,
     }, 
     socialProviders: {
           google: { 

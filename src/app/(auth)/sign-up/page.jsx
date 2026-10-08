@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button, Form, Input, Label, TextField, FieldError } from "@heroui/react";
 import { signIn, signUp } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
@@ -17,6 +18,7 @@ const handleGithubSignIn = async () => {
 };
 
 const SignUp = () => {
+    const router = useRouter();
     const [password, setPassword] = useState("");
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +30,7 @@ const SignUp = () => {
         }
 
         const { error } = await signUp.email({
-            name: data.name, email: data.email, password: data.password, callbackURL: "/",
+            name: data.name, email: data.email, password: data.password,
         });
 
         if (error) {
@@ -40,6 +42,7 @@ const SignUp = () => {
         }
 
         showToast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে।");
+        window.setTimeout(() => router.replace("/sign-in"), 1000);
     };
 
     return (
