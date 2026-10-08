@@ -148,7 +148,7 @@ export default function Navbar() {
                                 const isUp = product.change?.dir === "up";
 
                                 return (
-                                    <Link key={`${product.id}-${index}`} href={`/product/${product.slug}`} className="flex shrink-0 items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-70">
+                                    <Link key={`${product.id}-${index}`} href={`/product/${product.id}`} className="flex shrink-0 items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-70">
                                         <span className="text-[18px] leading-none font-['Segoe_UI_Emoji'] text-[#111827]">{product.category === "dal" ? "🫘" : product.image || product.categoryIcon}</span>
                                         <span className="text-[14px] font-medium leading-5 text-[#111827]">{product.nameBn}</span>
                                         <span className="text-[14px] font-normal leading-5 text-[#374151]">{formatPrice(product.today)} টাকা/{getUnit(product.unit)}</span>

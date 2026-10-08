@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function AllProducts() {
     const [products, setProducts] = useState([]);
@@ -25,8 +26,9 @@ export default function AllProducts() {
                     {products.map(product => {
                         const change = product.change?.pct || 0;
                         const direction = product.change?.dir;
-                        
+
                         return (
+                            <Link href={`/product/${product.id}`} key={product.id} className="block">
                             <div key={product.id} className="relative rounded-2xl border border-[#E5E7EB] bg-white p-5">
                                 <div className="flex items-center gap-3">
                                     <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#F3F4F6] text-[30px]">
@@ -51,6 +53,7 @@ export default function AllProducts() {
                                     {direction === "up" ? "▲" : direction === "down" ? "▼" : "—"} {banglaNumber(Math.abs(change))}%
                                 </span>
                             </div>
+                            </Link>
                         );
                     })}
                 </div>

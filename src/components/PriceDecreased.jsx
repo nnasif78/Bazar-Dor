@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function PriceDecreased() {
     const [products, setProducts] = useState([]);
@@ -20,6 +21,7 @@ export default function PriceDecreased() {
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {products.map(product => (
+                        <Link href={`/product/${product.id}`} key={product.id} className="block">
                         <div key={product.id} className="relative rounded-2xl border border-[#E5E7EB] bg-white p-5">
                             <div className="flex items-center gap-3">
                                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#F3F4F6] text-[30px]">{product.image}</div>
@@ -38,6 +40,7 @@ export default function PriceDecreased() {
                                 ▼ {Math.abs(product.change.pct)}%
                             </span>
                         </div>
+                        </Link>
                     ))}
                 </div>
             </div>
