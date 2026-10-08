@@ -28,7 +28,6 @@ export default function Navbar() {
         const now = new Date();
         const weekdays = ["রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার"];
         const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
-
         setDate(`${weekdays[now.getDay()]}, ${banglaDigits(now.getDate())} ${months[now.getMonth()]}, ${banglaDigits(now.getFullYear())}`);
     }, []);
     useEffect(() => {
@@ -41,7 +40,6 @@ export default function Navbar() {
                 console.error("Category fetch error:", error);
             }
         };
-
         fetchCategories();
     }, []);
     useEffect(() => {
@@ -54,14 +52,12 @@ export default function Navbar() {
                 console.error("Product fetch error:", error);
             }
         };
-
         fetchProducts();
     }, []);
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (profileRef.current && !profileRef.current.contains(event.target)) setProfileOpen(false);
         };
-
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
@@ -87,7 +83,7 @@ export default function Navbar() {
                                 <Link href="/sign-in" className="text-[14px] font-semibold leading-[21px] text-[#111827] transition hover:text-[#047F39]">সাইন ইন</Link>
                                 <Link href="/sign-up" className="rounded-lg bg-[#047F39] px-5 py-2.5 text-[14px] font-semibold leading-[21px] text-white shadow-sm transition hover:bg-[#036B30]">সাইন আপ</Link>
                             </div>
-                        ):(
+                        ) : (
                             <div ref={profileRef} className="relative">
                                 <button type="button" onClick={() => setProfileOpen((previous) => !previous)} className="flex items-center gap-2">
                                     {session.user.image ? (
@@ -104,7 +100,6 @@ export default function Navbar() {
                                             <p className="truncate text-[14px] font-semibold leading-[20px] text-[#111827]">{session.user.name}</p>
                                             <p className="mt-0.5 truncate text-[12px] font-normal leading-[18px] text-[#6B7280]">{session.user.email}</p>
                                         </div>
-
                                         <div className="pt-2">
                                             <Link href="/profile" onClick={() => setProfileOpen(false)} className="flex items-center gap-2 rounded-md px-2 py-2 text-[14px] font-normal leading-[21px] text-[#111827] transition hover:bg-[#F3F4F6]">
                                                 <span>👤</span><span>আমার প্রোফাইল</span>
@@ -120,18 +115,14 @@ export default function Navbar() {
                     )}
                 </div>
             </div>
-            <div className="h-[49px] border-b border-[#E5E7EB]">
-                <div className="scrollbar-hide mx-auto flex h-full max-w-6xl items-center overflow-x-auto px-4">
-                    <div className="flex min-w-max items-center gap-7">
-                        <Link href="/" className={`flex h-[49px] items-center gap-1.5 border-b-2 px-1 text-[12px] font-semibold leading-[17.1px] transition ${pathname === "/" ? "border-[#047F39] text-[#047F39]" : "border-transparent text-[#374151] hover:text-[#047F39]"}`}>
-                            <span className="text-[16px] leading-none text-[#111827]">🏠</span><span>সব</span>
-                        </Link>
+            <div className="min-h-[45px] border-b border-[#E5E7EB] sm:h-[49px]">
+                <div className="mx-auto flex max-w-6xl items-center px-4">
+                    <div className="grid w-full grid-cols-4 items-center gap-x-2 sm:flex sm:gap-7">
                         {categories.map((category) => {
-                            const active = pathname === `/category/${category.slug}`;
-
+                            const active = pathname === `/category/${category.id}`;
                             return (
-                                <Link key={category.id} href={`/category/${category.slug}`} className={`flex h-[49px] items-center gap-1.5 border-b-2 px-1 text-[12px] font-semibold leading-[17.1px] transition ${active ? "border-[#047F39] text-[#047F39]" : "border-transparent text-[#374151] hover:text-[#047F39]"}`}>
-                                    <span className="text-[16px] leading-none font-['Segoe_UI_Emoji'] text-[#111827]">{category.slug === "dal" ? "🫘" : category.icon}</span>
+                                <Link key={category.id} href={`/category/${category.id}`} className={`flex h-[45px] items-center justify-center gap-1 border-b-2 px-1 text-[11px] font-semibold leading-[17.1px] transition sm:h-[49px] sm:justify-start sm:gap-1.5 sm:text-[12px] ${active ? "border-[#047F39] text-[#047F39]" : "border-transparent text-[#374151] hover:text-[#047F39]"}`}>
+                                    <span className="text-[14px] leading-none font-['Segoe_UI_Emoji'] text-[#111827] sm:text-[16px]">{category.icon}</span>
                                     <span>{category.nameBn}</span>
                                 </Link>
                             );
