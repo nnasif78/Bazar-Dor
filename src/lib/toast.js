@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 const ICONS = {
     success: "https://cdn-icons-png.flaticon.com/512/845/845646.png",
-    error: "https://cdn-icons-png.flaticon.com/512/845/845646.png",
+    error: "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/alert-icon.png",
     alert: "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/alert-icon.png",
 };
 
