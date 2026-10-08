@@ -87,14 +87,15 @@ export default function Profile() {
                 <div className="mb-7"><h1 className="text-[28px] font-bold leading-9 text-[#111827]">আমার প্রোফাইল</h1>
                 <p className="mt-1 text-[14px] leading-5 text-[#6B7280]">আপনার অ্যাকাউন্টের তথ্য এখানে দেখুন</p>
                 </div>
-                <div className="flex items-center justify-between rounded-2xl border border-[#E5E7EB] bg-white p-6">
-                    <div className="flex items-center gap-4">
+                <div className="flex flex-col items-center gap-5 rounded-2xl border border-[#E5E7EB] bg-white p-6 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex min-w-0 flex-col items-center gap-3 text-center sm:flex-row sm:gap-4 sm:text-left">
                         <Image src={user.image || "/assets/logo-icon.png"} alt={user.name || "Profile"} width={64} height={64} className="h-16 w-16 rounded-xl object-cover" />
-                    <div>
-                        <h2 className="text-[18px] font-semibold text-[#111827]">{user.name}</h2><p className="mt-1 text-[14px] text-[#6B7280]">{user.email}</p>
+                        <div className="min-w-0">
+                            <h2 className="break-words text-[18px] font-semibold text-[#111827]">{user.name}</h2>
+                            <p className="mt-1 break-all text-[14px] text-[#6B7280]">{user.email}</p>
                         </div>
-                        </div>
-                    <Button onPress={() => signOut({ fetchOptions: { onSuccess: () => showToast.success("সাইন আউট সফল হয়েছে।") } })} className="rounded-lg border border-[#FCA5A5] bg-white px-4 text-[14px] font-semibold text-[#DC2626] hover:bg-[#FEF2F2]">← সাইন আউট</Button>
+                    </div>
+                    <Button onPress={() => signOut({ fetchOptions: { onSuccess: () => showToast.success("সাইন আউট সফল হয়েছে।") } })} className="w-full max-w-40 rounded-lg border border-[#FCA5A5] bg-white px-4 text-[14px] font-semibold text-[#DC2626] hover:bg-[#FEF2F2] sm:w-auto">← সাইন আউট</Button>
                 </div>
                 <div className="mt-5 rounded-2xl border border-[#E5E7EB] bg-white p-6">
                     <h2 className="text-[18px] font-bold text-[#111827]">তথ্য</h2>
