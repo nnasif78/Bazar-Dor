@@ -1,129 +1,75 @@
 "use client";
 
 import React from "react";
-import {
-    Button,
-    Description,
-    FieldError,
-    Form,
-    Input,
-    Label,
-    TextField,
-} from "@heroui/react";
-
+import Link from "next/link";
+import { Button, Form, Input, Label, TextField, FieldError } from "@heroui/react";
 import { signIn } from "@/lib/auth-client";
 
-const login = async () => {
-    const data = await signIn.social({
-        provider: "google",
-    });
-};
-const handleGithubSignIn = async () => {
-    const data = await signIn.social({
-        provider: "github",
-    });
+const login = async () => await signIn.social({ provider: "google" });
+const handleGithubSignIn = async () => await signIn.social({ provider: "github" });
 
-    console.log(data);
-};
 const SignIn = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
-
-        const formData = new FormData(e.currentTarget);
-        const data = {};
-
-        formData.forEach((value, key) => {
-            data[key] = value.toString();
-        });
+        const formData = new FormData(e.currentTarget), data = {};
+        formData.forEach((value, key) => data[key] = value.toString());
 
         const { data: signindata, error } = await signIn.email({
-            email: data.email,
-            password: data.password,
-            rememberMe: true,
-            callbackURL: "/",
+            email: data.email, password: data.password, rememberMe: true, callbackURL: "/",
         });
-
         console.log(signindata, error);
     };
 
     return (
-        <div>
-            <Form
-                className="flex w-96 flex-col gap-4"
-                onSubmit={onSubmit}
-            >
-                <TextField
-                    isRequired
-                    name="email"
-                    type="email"
-                    validate={(value) => {
-                        if (
-                            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-                                value
-                            )
-                        ) {
-                            return "Please enter a valid email address";
-                        }
-
-                        return null;
-                    }}
-                >
-                    <Label>Email</Label>
-                    <Input placeholder="john@example.com" />
-                    <FieldError />
-                </TextField>
-
-                <TextField
-                    isRequired
-                    minLength={8}
-                    name="password"
-                    type="password"
-                    validate={(value) => {
-                        if (value.length < 8) {
-                            return "Password must be at least 8 characters";
-                        }
-
-                        if (!/[A-Z]/.test(value)) {
-                            return "Password must contain at least one uppercase letter";
-                        }
-
-                        if (!/[0-9]/.test(value)) {
-                            return "Password must contain at least one number";
-                        }
-
-                        return null;
-                    }}
-                >
-                    <Label>Password</Label>
-                    <Input placeholder="Enter your password" />
-                    <Description>
-                        Must be at least 8 characters with 1 uppercase and 1 number
-                    </Description>
-                    <FieldError />
-                </TextField>
-
-                <div className="flex gap-2">
-                    <Button type="submit">Submit</Button>
-
-                    <Button type="reset" variant="secondary">
-                        Reset
-                    </Button>
+        <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-12">
+            <div className="mx-auto flex max-w-md flex-col items-center">
+                <div className="mb-7 text-center">
+                    <h1 className="text-[28px] font-bold leading-9 text-[#111827]">সাইন ইন</h1>
+                    <p className="mt-2 text-[14px] leading-5 text-[#6B7280]">বিস্তারিত দাম, বাজার তুলনা ও প্রোফাইল দেখতে অ্যাকাউন্টে ঢুকুন।</p>
                 </div>
-                <Button
-                    onPress={login}
-                    className="w-full bg-white font-semibold text-black shadow-md hover:bg-gray-100"
-                >
-                    Continue with Google
-                </Button>
-                <Button
-                    onPress={handleGithubSignIn}
-                    className="bg-gray-900 px-5 py-2 font-semibold text-white hover:bg-gray-800"
-                >
-                    Continue with GitHub
-                </Button>
-            </Form>
-        </div>
+
+                <div className="h-[374px] w-[416px] max-w-full rounded-2xl border border-[#E5E7EB] bg-white p-5 shadow-sm">
+                    <Form className="flex w-full flex-col gap-4" onSubmit={onSubmit}>
+                        <TextField isRequired name="email" type="email" validate={(value) => !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value) ? "সঠিক ইমেইল দিন" : null}>
+                            <Label className="mb-1.5 text-[14px] font-medium text-[#111827]">ইমেইল</Label>
+                            <Input className="h-10 rounded-lg border-[#D1D5DB] px-3 text-[14px]" placeholder="you@example.com" />
+                            <FieldError />
+                        </TextField>
+
+                        <TextField isRequired minLength={8} name="password" type="password" validate={(value) => value.length < 8 ? "পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে" : null}>
+                            <Label className="mb-1.5 text-[14px] font-medium text-[#111827]">পাসওয়ার্ড</Label>
+                            <Input className="h-10 rounded-lg border-[#D1D5DB] px-3 text-[14px]" placeholder="কমপক্ষে ৮ অক্ষর" />
+                            <FieldError />
+                        </TextField>
+
+                        <Button type="submit" className="h-10 w-full rounded-lg bg-[#047F39] text-[14px] font-semibold text-white hover:bg-[#036B30]">সাইন ইন</Button>
+
+                        <div className="flex items-center gap-3">
+                            <div className="h-px flex-1 bg-[#E5E7EB]" />
+                            <span className="text-[12px] text-[#9CA3AF]">অথবা</span>
+                            <div className="h-px flex-1 bg-[#E5E7EB]" />
+                        </div>
+
+                        <div className="flex w-full gap-2">
+                            <Button type="button" onPress={login} className="h-10 min-w-0 flex-1 rounded-lg border border-[#D1D5DB] bg-white px-2 text-[11px] font-semibold text-[#111827] hover:bg-[#F9FAFB]">
+                                <img src="https://img.icons8.com/color/1200/google-logo.jpg" alt="Google" className="h-5 w-5 shrink-0 rounded-full object-cover" />
+                                <span className="truncate">Google দিয়ে চালিয়ে যান</span>
+                            </Button>
+                            <Button type="button" onPress={handleGithubSignIn} className="h-10 min-w-0 flex-1 rounded-lg border border-[#D1D5DB] bg-white px-2 text-[11px] font-semibold text-[#111827] hover:bg-[#F9FAFB]">
+                                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" className="h-5 w-5 shrink-0" />
+                                <span className="truncate">GitHub দিয়ে চালিয়ে যান</span>
+                            </Button>
+                        </div>
+                    </Form>
+
+                    <p className="mt-4 text-center text-[14px] font-normal leading-5 text-[#6B7280]">অ্যাকাউন্ট নেই?{" "}
+                        <Link href="/sign-up" className="font-normal text-[#047F39] hover:underline">সাইন আপ করুন</Link>
+                    </p>
+                </div>
+
+                <Link href="/" className="mt-6 text-[14px] font-medium text-[#6B7280] hover:text-[#047F39]">← হোম পেজে ফিরে যান</Link>
+            </div>
+        </main>
     );
 };
-
 export default SignIn;
