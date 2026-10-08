@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button, Form, Input, Label, TextField, FieldError } from "@heroui/react";
 import { signIn } from "@/lib/auth-client";
 import { showToast } from "@/lib/toast";
@@ -25,13 +26,14 @@ const getSignInErrorMessage = (error) => {
 };
 
 const SignIn = () => {
+    const router = useRouter();
     const onSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget), data = {};
         formData.forEach((value, key) => data[key] = value.toString());
 
         const { error } = await signIn.email({
-            email: data.email, password: data.password, rememberMe: true, callbackURL: "/",
+            email: data.email, password: data.password, rememberMe: true,
         });
 
         if (error) {
@@ -40,6 +42,7 @@ const SignIn = () => {
         }
 
         showToast.success("সাইন ইন সফল হয়েছে।");
+        window.setTimeout(() => router.replace("/"), 1000);
     };
 
     return (

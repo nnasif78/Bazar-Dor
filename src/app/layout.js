@@ -2,8 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ToastProvider from "@/components/ToastProvider";
 import { Suspense } from "react";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const geistSans = Geist({
@@ -35,14 +35,7 @@ export default function RootLayout({ children }) {
           {children}
         </main>
         <Footer />
-        <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          closeButton={false}
-          pauseOnHover={false}
-          pauseOnFocusLoss={false}
-          newestOnTop
-        />
+        <ToastProvider />
       </body>
     </html>
   );
