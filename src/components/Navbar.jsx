@@ -97,10 +97,10 @@ export default function Navbar() {
                                     {session.user.image ? (
                                         <Image src={session.user.image} alt={session.user.name || "Profile"} width={36} height={36} className="h-9 w-9 rounded-full object-cover" />
                                     ) : (
-                                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#047F39] text-sm font-semibold text-white">{session.user.name?.charAt(0)?.toUpperCase() || "U"}</div>
+                                        <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#047F39] text-sm font-semibold text-white">{session.user.name?.charAt(0)?.toUpperCase() || "U"}</div>
                                     )}
                                     <span className="max-w-[120px] truncate text-[14px] font-medium leading-[21px] text-[#111827]">{session.user.name}</span>
-                                    <span className={`text-xs text-[#111827] transition-transform ${profileOpen ? "rotate-180" : ""}`}>▼</span>
+                                    <span className={`text-xs text-[#6B7280] transition-transform ${profileOpen ? "rotate-180" : ""}`}>▼</span>
                                 </button>
                                 {profileOpen && (
                                     <div className="absolute right-0 top-[48px] z-50 w-64 rounded-xl border border-[#E5E7EB] bg-white p-4 shadow-lg">
@@ -151,13 +151,16 @@ export default function Navbar() {
                             const isUp = product.change?.dir === "up";
 
                             return (
-                                <Link key={`${product.id}-${index}`} href={`/product/${product.id}`} className="flex shrink-0 items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-70 ">
-                                    <span className="text-[18px] leading-none font-['Segoe_UI_Emoji'] text-[#111827]">{product.image || product.categoryIcon}</span>
-                                    <span className="text-[14px] font-medium leading-5 text-[#111827]">{product.nameBn}</span>
-                                    <span className="text-[14px] font-normal leading-5 text-[#374151]">{formatPrice(product.today)} টাকা/{getUnit(product.unit)}</span>
-                                    {isUp && <span className="text-[14px] font-semibold leading-5 text-[#DC2626]">▲ {formatPrice(product.change.pct)}%</span>}
-                                    {isDown && <span className="text-[14px] font-semibold leading-5 text-[#047F39]">▼ {formatPrice(product.change.pct)}%</span>}
-                                </Link>
+                                <div key={`${product.id}-${index}`} className="flex shrink-0 items-center gap-8">
+                                    <Link href={`/product/${product.id}`} className="flex shrink-0 items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-70">
+                                        <span className="text-[18px] leading-none font-['Segoe_UI_Emoji'] text-[#111827]">{product.image || product.categoryIcon}</span>
+                                        <span className="text-[14px] font-medium leading-5 text-[#111827]">{product.nameBn}</span>
+                                        <span className="text-[14px] font-normal leading-5 text-[#374151]">{formatPrice(product.today)} টাকা/{getUnit(product.unit)}</span>
+                                        {isUp && <span className="text-[14px] font-semibold leading-5 text-[#DC2626]">▲ {formatPrice(product.change.pct)}%</span>}
+                                        {isDown && <span className="text-[14px] font-semibold leading-5 text-[#047F39]">▼ {formatPrice(product.change.pct)}%</span>}
+                                    </Link>
+                                    <span aria-hidden="true" className="h-px w-6 shrink-0 bg-[#D1D5DB]" />
+                                </div>
                             );
                         })}
                     </div>
