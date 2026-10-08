@@ -41,7 +41,3 @@
 }
 
 .loading-dot { animation: loading-dot 1s ease-in-out infinite; }
-
-@media (prefers-reduced-motion: reduce) {
-    .skeleton-shimmer, .loading-dot { animation: none; }
-}
