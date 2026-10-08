@@ -102,10 +102,10 @@ export default function Navbar() {
                                         </div>
                                         <div className="pt-2">
                                             <Link href="/profile" onClick={() => setProfileOpen(false)} className="flex items-center gap-2 rounded-md px-2 py-2 text-[14px] font-normal leading-[21px] text-[#111827] transition hover:bg-[#F3F4F6]">
-                                                <span>👤</span><span>আমার প্রোফাইল</span>
+                                                <span>{session.user.image || ""}</span><span>আমার প্রোফাইল</span>
                                             </Link>
                                             <button type="button" onClick={handleSignOut} className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[14px] font-normal leading-[21px] text-red-500 transition hover:bg-red-50">
-                                                <span>↩</span><span>সাইন আউট</span>
+                                                <span>সাইন আউট</span>
                                             </button>
                                         </div>
                                     </div>
@@ -132,23 +132,21 @@ export default function Navbar() {
             </div>
             <div className="h-16 overflow-hidden border-b border-[#E5E7EB] bg-[#F8FAF9]">
                 {products.length > 0 ? (
-                    <div className="flex h-full w-max items-center">
-                        <div className="bazar-marquee flex h-full items-center gap-8">
-                            {tickerProducts.map((product, index) => {
-                                const isDown = product.change?.dir === "down";
-                                const isUp = product.change?.dir === "up";
+                    <div className="bazar-marquee flex h-full w-max items-center gap-8">
+                        {tickerProducts.map((product, index) => {
+                            const isDown = product.change?.dir === "down";
+                            const isUp = product.change?.dir === "up";
 
-                                return (
-                                    <Link key={`${product.id}-${index}`} href={`/product/${product.id}`} className="flex shrink-0 items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-70">
-                                        <span className="text-[18px] leading-none font-['Segoe_UI_Emoji'] text-[#111827]">{product.category === "dal" ? "🫘" : product.image || product.categoryIcon}</span>
-                                        <span className="text-[14px] font-medium leading-5 text-[#111827]">{product.nameBn}</span>
-                                        <span className="text-[14px] font-normal leading-5 text-[#374151]">{formatPrice(product.today)} টাকা/{getUnit(product.unit)}</span>
-                                        {isUp && <span className="text-[14px] font-semibold leading-5 text-[#047F39]">▲ {formatPrice(product.change.pct)}%</span>}
-                                        {isDown && <span className="text-[14px] font-semibold leading-5 text-[#DC2626]">▼ {formatPrice(product.change.pct)}%</span>}
-                                    </Link>
-                                );
-                            })}
-                        </div>
+                            return (
+                                <Link key={`${product.id}-${index}`} href={`/product/${product.id}`} className="flex shrink-0 items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-70">
+                                    <span className="text-[18px] leading-none font-['Segoe_UI_Emoji'] text-[#111827]">{product.image || product.categoryIcon}</span>
+                                    <span className="text-[14px] font-medium leading-5 text-[#111827]">{product.nameBn}</span>
+                                    <span className="text-[14px] font-normal leading-5 text-[#374151]">{formatPrice(product.today)} টাকা/{getUnit(product.unit)}</span>
+                                    {isUp && <span className="text-[14px] font-semibold leading-5 text-[#047F39]">▲ {formatPrice(product.change.pct)}%</span>}
+                                    {isDown && <span className="text-[14px] font-semibold leading-5 text-[#DC2626]">▼ {formatPrice(product.change.pct)}%</span>}
+                                </Link>
+                            );
+                        })}
                     </div>
                 ) : (
                     <div className="flex h-full items-center justify-center text-sm text-gray-400">দাম লোড হচ্ছে...</div>

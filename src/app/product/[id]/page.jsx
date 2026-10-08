@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 
-export default function ProductDetails() {
+function ProductDetailsContent() {
     const { id } = useParams();
     const router = useRouter();
     const { data: session, isPending } = useSession();
@@ -26,7 +26,38 @@ export default function ProductDetails() {
     const unit = value => value === "kg" ? "কেজি" : value === "dozen" ? "ডজন" : value === "litre" ? "লিটার" : "পিস";
 
     if (isPending || !session?.user || !product) {
-        return <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0]" />;
+        return (
+            <main className="min-h-[calc(100vh-68px)] animate-pulse bg-[#F0F5F0] px-4 py-10">
+                <div className="mx-auto max-w-6xl">
+                    <div className="h-4 w-48 rounded bg-[#DDEBDD]" />
+                    <div className="mt-5 flex flex-col gap-6 rounded-2xl border border-[#E5E7EB] bg-white p-6 md:flex-row md:items-center md:justify-between">
+                        <div className="flex items-center gap-4">
+                            <div className="h-20 w-20 shrink-0 rounded-xl bg-[#F0F5F0]" />
+                            <div>
+                                <div className="h-7 w-48 rounded bg-[#DDEBDD]" />
+                                <div className="mt-2 h-4 w-32 rounded bg-[#E8F1E8]" />
+                                <div className="mt-3 h-4 w-64 rounded bg-[#E8F1E8]" />
+                            </div>
+                        </div>
+                        <div className="h-[132px] w-[117px] rounded-xl bg-[#F0F5F0]" />
+                    </div>
+                    <section className="mt-8 rounded-2xl border border-[#D1D5DB] bg-white p-6">
+                        <div className="h-6 w-48 rounded bg-[#DDEBDD]" />
+                        <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
+                            {[...Array(3)].map((_, index) => (
+                                <div key={index} className="h-28 rounded-2xl bg-[#F0F5F0]" />
+                            ))}
+                        </div>
+                        <div className="mt-8 h-6 w-56 rounded bg-[#DDEBDD]" />
+                        <div className="mt-5 overflow-hidden rounded-2xl border border-[#D1D5DB] bg-white">
+                            {[...Array(5)].map((_, index) => (
+                                <div key={index} className="h-12 border-b border-[#D1D5DB] bg-[#F0F5F0]" />
+                            ))}
+                        </div>
+                    </section>
+                </div>
+            </main>
+        );
     }
 
     const markets = product.markets || [];
@@ -50,7 +81,7 @@ export default function ProductDetails() {
                 <div className="flex flex-col gap-6 rounded-2xl border border-[#E5E7EB] bg-white p-6 md:flex-row md:items-center md:justify-between">
                     <div className="flex items-center gap-4">
                         <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-[#F0F5F0] text-[42px]">
-                            {product.image}
+                            {product.image || product.categoryIcon}
                         </div>
                         <div>
                             <h1 className="text-[26px] font-bold text-[#111827]">{product.nameBn}</h1>
@@ -70,7 +101,6 @@ export default function ProductDetails() {
                     </div>
                     <div className="flex h-[132px] w-[117px] shrink-0 flex-col items-center justify-center rounded-xl bg-[#F0F5F0] p-3">
                         <p className="text-[13px] text-[#6B7280]">আজকের দাম</p>
-
                         <div className="mt-1 flex items-end justify-center gap-1">
                             <span className="text-[28px] font-bold text-[#111827]">
                                 {banglaNumber(product.today)}
@@ -123,7 +153,6 @@ export default function ProductDetails() {
                             </p>
                         </div>
                     </div>
-
                     <h2 className="mb-5 mt-8 text-[20px] font-bold text-[#111827]">
                         বাজারভিত্তিক আজকের দাম
                     </h2>
@@ -132,21 +161,11 @@ export default function ProductDetails() {
                             <table className="w-full min-w-[700px] text-left">
                                 <thead className="bg-white">
                                     <tr className="border-b border-[#D1D5DB]">
-                                        <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">
-                                            বাজার
-                                        </th>
-                                        <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">
-                                            বিভাগ
-                                        </th>
-                                        <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">
-                                            সর্বনিম্ন
-                                        </th>
-                                        <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">
-                                            সর্বাধিক
-                                        </th>
-                                        <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">
-                                            গড়
-                                        </th>
+                                        <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">বাজার</th>
+                                        <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">বিভাগ</th>
+                                        <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">সর্বনিম্ন</th>
+                                        <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">সর্বাধিক</th>
+                                        <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">গড়</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -155,24 +174,13 @@ export default function ProductDetails() {
                                         return (
                                             <tr
                                                 key={index}
-                                                className={`border-b border-[#111827] last:border-0 ${index % 2 === 1 ? "bg-[#F0F5F0]" : "bg-white"
-                                                    }`}
+                                                className={`border-b border-[#D1D5DB] last:border-0 ${index % 2 === 1 ? "bg-[#F0F5F0]" : "bg-white"}`}
                                             >
-                                                <td className="px-5 py-4 text-[14px] text-[#111827]">
-                                                    {market.market}
-                                                </td>
-                                                <td className="px-5 py-4 text-[14px] text-[#111827]">
-                                                    {market.division}
-                                                </td>
-                                                <td className="px-5 py-4 text-[14px] font-regular text-[#111827]">
-                                                    {banglaNumber(market.min)} টাকা
-                                                </td>
-                                                <td className="px-5 py-4 text-[14px] font-regular text-[#111827]">
-                                                    {banglaNumber(market.max)} টাকা
-                                                </td>
-                                                <td className="px-5 py-4 text-[14px] font-bold text-[#111827]">
-                                                    {banglaNumber(average)} টাকা
-                                                </td>
+                                                <td className="px-5 py-4 text-[14px] text-[#111827]">{market.market}</td>
+                                                <td className="px-5 py-4 text-[14px] text-[#111827]">{market.division}</td>
+                                                <td className="px-5 py-4 text-[14px] font-normal text-[#111827]">{banglaNumber(market.min)} টাকা</td>
+                                                <td className="px-5 py-4 text-[14px] font-normal text-[#111827]">{banglaNumber(market.max)} টাকা</td>
+                                                <td className="px-5 py-4 text-[14px] font-bold text-[#111827]">{banglaNumber(average)} টাকা</td>
                                             </tr>
                                         );
                                     })}
@@ -183,5 +191,25 @@ export default function ProductDetails() {
                 </section>
             </div>
         </main>
+    );
+}
+
+function ProductDetailsLoading() {
+    return (
+        <main className="min-h-[calc(100vh-68px)] animate-pulse bg-[#F0F5F0] px-4 py-10">
+            <div className="mx-auto max-w-6xl">
+                <div className="h-4 w-48 rounded bg-[#DDEBDD]" />
+                <div className="mt-5 h-48 rounded-2xl border border-[#E5E7EB] bg-white" />
+                <div className="mt-8 h-6 w-48 rounded bg-[#DDEBDD]" />
+            </div>
+        </main>
+    );
+}
+
+export default function ProductDetails() {
+    return (
+        <Suspense fallback={<ProductDetailsLoading />}>
+            <ProductDetailsContent />
+        </Suspense>
     );
 }
