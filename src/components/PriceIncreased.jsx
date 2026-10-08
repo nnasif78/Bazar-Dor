@@ -5,6 +5,7 @@ import Link from "next/link";
 import ProductCardSkeleton, { LoadingLabel } from "@/components/ProductCardSkeleton";
 
 const banglaDigits = value => String(value).replace(/\d/g, digit => "০১২৩৪৫৬৭৮৯"[digit]);
+const banglaPrice = value => banglaDigits(new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 }).format(Number(value)));
 
 export default function PriceIncreased() {
     const [products, setProducts] = useState([]);
@@ -40,7 +41,7 @@ export default function PriceIncreased() {
 
                             <div className="mt-5">
                                 <p className="text-[13px] text-[#6B7280]">আজকের দাম</p>
-                                <p className="mt-1 text-[22px] font-bold text-[#111827]">{product.today} টাকা</p>
+                                <p className="mt-1 text-[22px] font-bold text-[#111827]">{banglaPrice(product.today)} টাকা</p>
                             </div>
 
                             <span className="absolute bottom-5 right-5 rounded-full bg-[#FEF2F2] px-2.5 py-1 text-[12px] font-semibold text-[#DC2626]">

@@ -1,38 +1,25 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { useSession } from "@/lib/auth-client";
-import { showToast } from "@/lib/toast";
+import { Suspense, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { LoadingLabel } from "@/components/ProductCardSkeleton";
 
 function ProductDetailsContent() {
     const { id } = useParams();
-    const router = useRouter();
-    const { data: session, isPending } = useSession();
     const [product, setProduct] = useState(null);
-    const signInRedirectHandled = useRef(false);
 
     useEffect(() => {
-        if (!isPending && !session?.user && !signInRedirectHandled.current) {
-            signInRedirectHandled.current = true;
-            showToast.alert("অনুগ্রহ করে আগে সাইন ইন করুন।");
-            router.replace("/sign-in");
-        }
-    }, [isPending, session, router]);
-
-    useEffect(() => {
-        if (session?.user && id) {
+        if (id) {
             fetch(`https://api.api-store.workers.dev/api/bazardor/products/${id}`)
                 .then(res => res.json())
                 .then(data => setProduct(data));
         }
-    }, [session, id]);
+    }, [id]);
 
     const banglaNumber = value => Number(value).toFixed(1).replace(/\d/g, digit => "০১২৩৪৫৬৭৮৯"[digit]);
     const unit = value => value === "kg" ? "কেজি" : value === "dozen" ? "ডজন" : value === "litre" ? "লিটার" : "পিস";
 
-    if (isPending || !session?.user || !product) {
+    if (!product) {
         return (
             <main className="min-h-[calc(100vh-68px)] animate-pulse bg-[#F0F5F0] px-4 py-10">
                 <div className="mx-auto max-w-6xl">

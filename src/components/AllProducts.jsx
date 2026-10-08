@@ -18,6 +18,8 @@ export default function AllProducts() {
 
     const unit = value => value === "kg" ? "কেজি" : value === "dozen" ? "ডজন" : value === "litre" ? "লিটার" : "পিস";
     const banglaNumber = value => Number(value).toFixed(1).replace(/\d/g, digit => "০১২৩৪৫৬৭৮৯"[digit]);
+    const banglaPrice = value => new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 })
+        .format(Number(value)).replace(/\d/g, digit => "০১২৩৪৫৬৭৮৯"[digit]);
     return (
         <section id="সব-পণ্য" className="scroll-mt-4 bg-[#F0F5F0] px-4 py-8">
             <div className="mx-auto max-w-6xl">
@@ -46,13 +48,13 @@ export default function AllProducts() {
                                 </div>
                                 <div className="mt-5">
                                     <p className="text-[13px] text-[#6B7280]">আজকের দাম</p>
-                                    <p className="mt-1 text-[22px] font-bold text-[#111827]">{product.today} টাকা</p>
+                                    <p className="mt-1 text-[22px] font-bold text-[#111827]">{banglaPrice(product.today)} টাকা</p>
                                 </div>
                                 <span className={`absolute bottom-5 right-5 rounded-full px-2.5 py-1 text-[12px] font-semibold ${
                                     direction === "up"
-                                        ? "bg-[#FEF2F2] text-[#DC2626]"
+                                        ? "bg-[#ECFDF3] text-[#047F39]"
                                         : direction === "down"
-                                            ? "bg-[#ECFDF3] text-[#047F39]"
+                                            ? "bg-[#FEF2F2] text-[#DC2626]"
                                             : "bg-[#F3F4F6] text-[#6B7280]"
                                 }`}>
                                     {direction === "up" ? "▲" : direction === "down" ? "▼" : "—"} {banglaNumber(Math.abs(change))}%
