@@ -47,7 +47,7 @@ export default function AllProducts() {
 
                         return (
                             <Link href={`/product/${product.id}`} key={product.id} className="block">
-                            <div key={product.id} className="relative rounded-2xl border border-[#E5E7EB] bg-white p-5">
+                            <div key={product.id} className="relative rounded-2xl border border-[#E5E7EB] bg-[#FAFCFA] p-5">
                                 <div className="flex items-center gap-3">
                                     <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#F3F4F6] text-[30px]">
                                         {product.image}
@@ -63,10 +63,10 @@ export default function AllProducts() {
                                 </div>
                                 <span className={`absolute bottom-5 right-5 rounded-full px-2.5 py-1 text-[12px] font-semibold ${
                                     direction === "up"
-                                        ? "bg-[#ECFDF3] text-[#047F39]"
+                                        ? "bg-[#F0F5F0] text-[#047F39]"
                                         : direction === "down"
-                                            ? "bg-[#FEF2F2] text-[#DC2626]"
-                                            : "bg-[#F3F4F6] text-[#6B7280]"
+                                            ? "bg-[#F0F5F0] text-[#DC2626]"
+                                            : "bg-[#F0F5F0] text-[#6B7280]"
                                 }`}>
                                     {direction === "up" ? "▲" : direction === "down" ? "▼" : "—"} {banglaNumber(Math.abs(change))}%
                                 </span>
