@@ -103,7 +103,7 @@ export default function Navbar() {
                             <div ref={profileRef} className="relative">
                                 <button type="button" onClick={() => setProfileOpen((previous) => !previous)} className="flex items-center gap-2">
                                     {session.user.image ? (
-                                        <Image src={session.user.image} alt={session.user.name || "Profile"} width={36} height={36} className="h-9 w-9 rounded-full object-cover" />
+                                        <Image src={session.user.image} alt={session.user.name || "Profile"} width={36} height={36} className="h-9 w-9 rounded-xl object-cover" />
                                     ) : (
                                         <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#047F39] text-sm font-semibold text-white">{session.user.name?.charAt(0)?.toUpperCase() || "U"}</div>
                                     )}
