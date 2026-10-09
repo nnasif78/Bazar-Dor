@@ -206,10 +206,10 @@ function CategoryPageContent() {
 
                                     <span className={`absolute bottom-5 right-5 rounded-full px-2.5 py-1 text-[12px] font-bold ${
                                         direction === "up"
-                                        ? "bg-[#ECFDF3] text-[#047F39]"
+                                        ? "bg-[#F0F5F0] text-[#047F39]"
                                         : direction === "down"
-                                                ? "bg-[#FEF2F2] text-[#DC2626]"
-                                                : "bg-[#F3F4F6] text-[#6B7280]"
+                                                ? "bg-[#F0F5F0] text-[#DC2626]"
+                                                : "bg-[#F0F5F0] text-[#6B7280]"
                                     }`}>
                                         {direction === "up" ? "▲" : direction === "down" ? "▼" : "—"}{" "}
                                         {banglaPercentage(Math.abs(change))}%
