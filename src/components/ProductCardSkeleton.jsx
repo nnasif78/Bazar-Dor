@@ -11,7 +11,7 @@ export function LoadingLabel({ className = "" }) {
 
 export default function ProductCardSkeleton({ count = 6, dense = false }) {
     return Array.from({ length: count }, (_, index) => (
-        <div key={index} aria-hidden="true" className={`relative rounded-2xl border border-[#E5E7EB] bg-white p-5 ${dense ? "h-[140px] w-full max-w-[360px]" : ""}`}>
+        <div key={index} aria-hidden="true" className={`relative rounded-2xl border border-[#E5E7EB] bg-[#FAFCFA] p-5 ${dense ? "h-[140px] w-full max-w-[360px]" : ""}`}>
             {dense ? (
                 <div className="flex items-start gap-4">
                     <div className={`${shimmer} h-14 w-14 shrink-0 rounded-xl`} />

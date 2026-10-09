@@ -15,7 +15,7 @@ export default function Banner() {
 
     return (
         <section className="bg-[#FAFCFA] px-4 py-8">
-            <div className="mx-auto flex max-w-6xl flex-col items-center justify-between overflow-hidden rounded-3xl border border-[#E5E7EB] bg-white px-5 py-7 sm:px-8 sm:py-8 md:flex-row md:px-10">
+            <div className="mx-auto flex max-w-6xl flex-col items-center justify-between overflow-hidden rounded-3xl border border-[#E5E7EB] bg-[#FAFCFA] px-5 py-7 sm:px-8 sm:py-8 md:flex-row md:px-10">
                 <div className="w-full max-w-2xl text-center md:text-left">
                     <span className="inline-flex rounded-full bg-[#E8F5EC] px-4 py-1.5 text-[14px] font-semibold text-[#047F39]">{date}</span>
                     <h1 className="mt-4 text-[30px] font-bold leading-[1.2] text-[#111827] sm:text-[36px]">আজকের বাজারের দাম এক নজরে</h1>

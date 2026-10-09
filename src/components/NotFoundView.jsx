@@ -7,7 +7,7 @@ export default function NotFoundView() {
         <>
             <Navbar />
             <main className="flex min-h-[70vh] items-center justify-center bg-[#F0F5F0] px-4 py-12">
-                <section className="w-full max-w-xl rounded-3xl border border-[#E5E7EB] bg-white px-6 py-12 text-center shadow-sm sm:px-10">
+                <section className="w-full max-w-xl rounded-3xl border border-[#E5E7EB] bg-[#FAFCFA] px-6 py-12 text-center shadow-sm sm:px-10">
                     <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-[#E8F5EC] text-4xl" aria-hidden="true">🛒</div>
                     <p className="mt-6 text-[72px] font-extrabold leading-none tracking-tight text-[#047F39]">৪০৪</p>
                     <h1 className="mt-4 text-2xl font-bold text-[#111827]">পেজটি পাওয়া যায়নি</h1>

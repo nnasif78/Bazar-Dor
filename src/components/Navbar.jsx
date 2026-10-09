@@ -83,7 +83,7 @@ export default function Navbar() {
     };
     const isLoggedIn = Boolean(session?.user);
     return (
-        <header className="w-full bg-white">
+        <header className="w-full bg-[#FAFCFA]">
             <div className="h-[68px] border-b border-[#E5E7EB]">
                 <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-4">
                     <Link href="/" className="flex items-center gap-3" aria-label="বাজার দর হোম">
@@ -111,7 +111,7 @@ export default function Navbar() {
                                     <span className={`text-xs text-[#6B7280] transition-transform ${profileOpen ? "rotate-180" : ""}`}>▼</span>
                                 </button>
                                 {profileOpen && (
-                                    <div className="absolute right-0 top-[48px] z-50 w-64 rounded-xl border border-[#E5E7EB] bg-white p-4 shadow-lg">
+                                    <div className="absolute right-0 top-[48px] z-50 w-64 rounded-xl border border-[#E5E7EB] bg-[#FAFCFA] p-4 shadow-lg">
                                         <div className="border-b border-[#E5E7EB] pb-3">
                                             <p className="truncate text-[14px] font-semibold leading-[20px] text-[#111827]">{session.user.name}</p>
                                             <p className="mt-0.5 truncate text-[12px] font-normal leading-[18px] text-[#6B7280]">{session.user.email}</p>
@@ -165,8 +165,8 @@ export default function Navbar() {
                                         <span className="text-[18px] leading-none font-['Segoe_UI_Emoji'] text-[#111827]">{product.image || product.categoryIcon}</span>
                                         <span className="text-[14px] font-medium leading-5 text-[#111827]">{product.nameBn}</span>
                                         <span className="text-[14px] font-normal leading-5 text-[#374151]">{formatPrice(product.today)} টাকা/{getUnit(product.unit)}</span>
-                                        {isUp && <span className="text-[14px] font-semibold leading-5 text-[#DC2626]">▲ {formatPrice(product.change.pct)}%</span>}
-                                        {isDown && <span className="text-[14px] font-semibold leading-5 text-[#047F39]">▼ {formatPrice(product.change.pct)}%</span>}
+                                        {isUp && <span className="rounded-full bg-[#F0F5F0] px-2.5 py-1 text-[14px] font-semibold leading-5 text-[#047F39]">▲ {formatPrice(product.change.pct)}%</span>}
+                                        {isDown && <span className="rounded-full bg-[#F0F5F0] px-2.5 py-1 text-[14px] font-semibold leading-5 text-[#DC2626]">▼ {formatPrice(product.change.pct)}%</span>}
                                     </Link>
                                     <span aria-hidden="true" className="h-6 w-px shrink-0 bg-[#D1D5DB]" />
                                 </div>

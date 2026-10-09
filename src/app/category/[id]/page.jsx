@@ -91,8 +91,8 @@ function CategoryPageContent() {
             <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-10">
                 <div className="mx-auto max-w-6xl">
                     <LoadingLabel className="mb-5" />
-                    <div aria-hidden="true" className="skeleton-shimmer h-28 rounded-3xl border border-[#E5E7EB] bg-white" />
-                    <div aria-hidden="true" className="skeleton-shimmer mt-5 h-16 rounded-3xl border border-[#E5E7EB] bg-white" />
+                    <div aria-hidden="true" className="skeleton-shimmer h-28 rounded-3xl border border-[#E5E7EB] bg-[#FAFCFA]" />
+                    <div aria-hidden="true" className="skeleton-shimmer mt-5 h-16 rounded-3xl border border-[#E5E7EB] bg-[#FAFCFA]" />
                     <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         <ProductCardSkeleton dense />
                     </div>
@@ -104,7 +104,7 @@ function CategoryPageContent() {
     if (notFound || loadError) {
         return (
             <main className="flex min-h-[calc(100vh-68px)] items-center justify-center bg-[#F0F5F0] px-4 py-10">
-                <div className="w-full max-w-lg rounded-3xl border border-[#E5E7EB] bg-white px-6 py-12 text-center shadow-sm">
+                <div className="w-full max-w-lg rounded-3xl border border-[#E5E7EB] bg-[#FAFCFA] px-6 py-12 text-center shadow-sm">
                     <div className="text-5xl" aria-hidden="true">{loadError ? "⚠️" : "🔎"}</div>
                     <h1 className="mt-4 text-2xl font-bold text-[#111827]">
                         {loadError ? "তথ্য লোড করা যায়নি" : "ক্যাটাগরি পাওয়া যায়নি"}
@@ -126,7 +126,7 @@ function CategoryPageContent() {
         <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-10">
             <div className="mx-auto max-w-6xl">
 
-                <div className="rounded-3xl border border-[#E5E7EB] bg-white p-6">
+                <div className="rounded-3xl border border-[#E5E7EB] bg-[#FAFCFA] p-6">
                     <div className="flex items-center gap-4">
                         <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-[#F0F5F0] text-[36px]">
                             {category?.icon}
@@ -144,7 +144,7 @@ function CategoryPageContent() {
                     </div>
                 </div>
 
-                <div className="mt-5 flex flex-col rounded-3xl border border-[#E5E7EB] bg-white p-5">
+                <div className="mt-5 flex flex-col rounded-3xl border border-[#E5E7EB] bg-[#FAFCFA] p-5">
                     <div className="flex w-full flex-col items-end gap-2">
                         <div className="flex items-center gap-2">
                             <span className="text-[14px] text-[#374151]">
@@ -156,7 +156,7 @@ function CategoryPageContent() {
                                     value={sort}
                                     onChange={e => setSort(e.target.value)}
                                     aria-label="পণ্যের তালিকা সাজান"
-                                    className="h-9 appearance-none rounded-full border border-[#D1D5DB] bg-white py-1 pl-3 pr-8 text-[13px] text-[#374151] outline-none"
+                                    className="h-9 appearance-none rounded-full border border-[#D1D5DB] bg-[#FAFCFA] py-1 pl-3 pr-8 text-[13px] text-[#374151] outline-none"
                                 >
                                     <option value="default">ডিফল্ট</option>
                                     <option value="price-low">দাম: কম থেকে বেশি</option>
@@ -179,7 +179,7 @@ function CategoryPageContent() {
 
                         return (
                             <Link key={product.id} href={`/product/${product.id}`} className="block">
-                                <div className="relative h-[140px] w-full max-w-[360px] rounded-2xl border border-[#D1D5DB] bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-md">
+                                <div className="relative h-[140px] w-full max-w-[360px] rounded-2xl border border-[#D1D5DB] bg-[#FAFCFA] p-5 transition hover:-translate-y-0.5 hover:shadow-md">
                                     <div className="flex items-start gap-4">
                                         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#F0F5F0] text-[30px]">
                                             {product.image || product.categoryIcon}
@@ -229,8 +229,8 @@ function CategoryPageLoading() {
         <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-10">
             <div className="mx-auto max-w-6xl">
                 <LoadingLabel className="mb-5" />
-                <div aria-hidden="true" className="skeleton-shimmer h-28 rounded-3xl border border-[#E5E7EB] bg-white" />
-                <div aria-hidden="true" className="skeleton-shimmer mt-5 h-16 rounded-3xl border border-[#E5E7EB] bg-white" />
+                <div aria-hidden="true" className="skeleton-shimmer h-28 rounded-3xl border border-[#E5E7EB] bg-[#FAFCFA]" />
+                <div aria-hidden="true" className="skeleton-shimmer mt-5 h-16 rounded-3xl border border-[#E5E7EB] bg-[#FAFCFA]" />
                 <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     <ProductCardSkeleton count={6} dense />
                 </div>

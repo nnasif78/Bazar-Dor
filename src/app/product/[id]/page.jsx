@@ -97,7 +97,7 @@ function ProductDetailsContent() {
     if (!isPending && session?.user && (productNotFound || loadError)) {
         return (
             <main className="flex min-h-[calc(100vh-138px)] items-center justify-center bg-[#F0F5F0] px-4 py-10">
-                <section className="w-full max-w-xl rounded-3xl border border-[#E5E7EB] bg-white px-6 py-12 text-center shadow-sm">
+                <section className="w-full max-w-xl rounded-3xl border border-[#E5E7EB] bg-[#FAFCFA] px-6 py-12 text-center shadow-sm">
                     <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-[#E8F5EC] text-4xl" aria-hidden="true">
                         {loadError ? "⚠️" : "🔎"}
                     </div>
@@ -126,7 +126,7 @@ function ProductDetailsContent() {
                 <div className="mx-auto max-w-6xl">
                     <LoadingLabel className="mb-5" />
                     <div className="skeleton-shimmer h-4 w-48 rounded bg-[#DDEBDD]" />
-                    <div className="mt-5 flex flex-col gap-6 rounded-2xl border border-[#E5E7EB] bg-white p-6 md:flex-row md:items-center md:justify-between">
+                    <div className="mt-5 flex flex-col gap-6 rounded-2xl border border-[#E5E7EB] bg-[#FAFCFA] p-6 md:flex-row md:items-center md:justify-between">
                         <div className="flex items-center gap-4">
                             <div className="skeleton-shimmer h-20 w-20 shrink-0 rounded-xl bg-[#F0F5F0]" />
                             <div>
@@ -137,7 +137,7 @@ function ProductDetailsContent() {
                         </div>
                         <div className="skeleton-shimmer h-[132px] w-[117px] rounded-xl bg-[#F0F5F0]" />
                     </div>
-                    <section className="mt-8 rounded-2xl border border-[#D1D5DB] bg-white p-6">
+                    <section className="mt-8 rounded-2xl border border-[#D1D5DB] bg-[#FAFCFA] p-6">
                         <div className="skeleton-shimmer h-6 w-48 rounded bg-[#DDEBDD]" />
                         <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
                             {[...Array(3)].map((_, index) => (
@@ -145,7 +145,7 @@ function ProductDetailsContent() {
                             ))}
                         </div>
                         <div className="skeleton-shimmer mt-8 h-6 w-56 rounded bg-[#DDEBDD]" />
-                        <div className="mt-5 overflow-hidden rounded-2xl border border-[#D1D5DB] bg-white">
+                        <div className="mt-5 overflow-hidden rounded-2xl border border-[#D1D5DB] bg-[#FAFCFA]">
                             {[...Array(5)].map((_, index) => (
                                 <div key={index} className="skeleton-shimmer h-12 border-b border-[#D1D5DB] bg-[#F0F5F0]" />
                             ))}
@@ -186,7 +186,7 @@ function ProductDetailsContent() {
                         {product.nameBn}
                     </Link>
                 </nav>
-                <div className="flex flex-col gap-5 rounded-2xl border border-[#E5E7EB] bg-white p-4 sm:gap-6 sm:p-6 md:flex-row md:items-center md:justify-between">
+                <div className="flex flex-col gap-5 rounded-2xl border border-[#E5E7EB] bg-[#FAFCFA] p-4 sm:gap-6 sm:p-6 md:flex-row md:items-center md:justify-between">
                     <div className="flex min-w-0 items-start gap-3 sm:items-center sm:gap-4">
                         <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-[#F0F5F0] text-[36px] sm:h-20 sm:w-20 sm:text-[42px]">
                             {product.image || product.categoryIcon}
@@ -223,22 +223,22 @@ function ProductDetailsContent() {
                             </div>
                         </div>
                         <span className={`inline-flex shrink-0 rounded-full px-2 py-1 text-[12px] font-bold ${direction === "up"
-                                ? "bg-[#FEF2F2] text-[#DC2626]"
+                                ? "bg-[#F0F5F0] text-[#047F39]"
                                 : direction === "down"
-                                    ? "bg-[#ECFDF3] text-[#047F39]"
-                                    : "bg-[#F3F4F6] text-[#6B7280]"
+                                    ? "bg-[#F0F5F0] text-[#DC2626]"
+                                    : "bg-[#F0F5F0] text-[#6B7280]"
                             }`}>
                             {direction === "up" ? "▲" : direction === "down" ? "▼" : "—"}{" "}
                             {banglaNumber(Math.abs(change))}%
                         </span>
                     </div>
                 </div>
-                <section className="mt-8 rounded-2xl border border-[#D1D5DB] bg-white p-6">
+                <section className="mt-8 rounded-2xl border border-[#D1D5DB] bg-[#FAFCFA] p-6">
                     <h2 className="mb-5 text-[20px] font-bold text-[#111827]">
                         দামের সারসংক্ষেপ
                     </h2>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                        <div className="rounded-2xl border border-[#E5E7EB] bg-white p-5">
+                        <div className="rounded-2xl border border-[#E5E7EB] bg-[#FAFCFA] p-5">
                             <p className="text-[14px] text-[#6B7280]">সর্বনিম্ন দাম</p>
                             <p className="mt-2 text-[26px] font-bold text-[#047F39]">
                                 {banglaNumber(minPrice)} টাকা
@@ -247,7 +247,7 @@ function ProductDetailsContent() {
                                 সবচেয়ে কম দামের বাজার
                             </p>
                         </div>
-                        <div className="rounded-2xl border border-[#E5E7EB] bg-white p-5">
+                        <div className="rounded-2xl border border-[#E5E7EB] bg-[#FAFCFA] p-5">
                             <p className="text-[14px] text-[#6B7280]">সর্বাধিক দাম</p>
                             <p className="mt-2 text-[26px] font-bold text-[#DC2626]">
                                 {banglaNumber(maxPrice)} টাকা
@@ -256,7 +256,7 @@ function ProductDetailsContent() {
                                 সবচেয়ে বেশি দামের বাজার
                             </p>
                         </div>
-                        <div className="rounded-2xl border border-[#E5E7EB] bg-white p-5">
+                        <div className="rounded-2xl border border-[#E5E7EB] bg-[#FAFCFA] p-5">
                             <p className="text-[14px] text-[#6B7280]">গড় দাম</p>
                             <p className="mt-2 text-[26px] font-bold text-[#047F39]">
                                 {banglaNumber(averagePrice)} টাকা
@@ -269,10 +269,10 @@ function ProductDetailsContent() {
                     <h2 className="mb-5 mt-8 text-[20px] font-bold text-[#111827]">
                         বাজারভিত্তিক আজকের দাম
                     </h2>
-                    <div className="overflow-hidden rounded-2xl border border-[#D1D5DB] bg-white">
+                    <div className="overflow-hidden rounded-2xl border border-[#D1D5DB] bg-[#FAFCFA]">
                         <div className="overflow-x-auto">
                             <table className="w-full min-w-[700px] text-left">
-                                <thead className="bg-white">
+                                <thead className="bg-[#FAFCFA]">
                                     <tr className="border-b border-[#D1D5DB]">
                                         <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">বাজার</th>
                                         <th className="px-5 py-4 text-[14px] font-semibold text-[#757C77]">বিভাগ</th>
@@ -287,7 +287,7 @@ function ProductDetailsContent() {
                                         return (
                                             <tr
                                                 key={index}
-                                                className={`border-b border-[#D1D5DB] last:border-0 ${index % 2 === 1 ? "bg-[#F0F5F0]" : "bg-white"}`}
+                                                className={`border-b border-[#D1D5DB] last:border-0 ${index % 2 === 1 ? "bg-[#F0F5F0]" : "bg-[#FAFCFA]"}`}
                                             >
                                                 <td className="px-5 py-4 text-[14px] text-[#111827]">{market.market}</td>
                                                 <td className="px-5 py-4 text-[14px] text-[#111827]">{market.division}</td>
@@ -312,7 +312,7 @@ function ProductDetailsLoading() {
         <main className="min-h-[calc(100vh-68px)] animate-pulse bg-[#F0F5F0] px-4 py-10">
             <div className="mx-auto max-w-6xl">
                 <div className="h-4 w-48 rounded bg-[#DDEBDD]" />
-                <div className="mt-5 h-48 rounded-2xl border border-[#E5E7EB] bg-white" />
+                <div className="mt-5 h-48 rounded-2xl border border-[#E5E7EB] bg-[#FAFCFA]" />
                 <div className="mt-8 h-6 w-48 rounded bg-[#DDEBDD]" />
             </div>
         </main>

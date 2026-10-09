@@ -53,7 +53,7 @@ export default function UpdateProfile() {
             <main className="min-h-[calc(100vh-68px)] bg-[#F0F5F0] px-4 py-10">
                 <div className="mx-auto mt-20 max-w-4xl">
                     <LoadingLabel className="mb-5" />
-                    <div aria-hidden="true" className="skeleton-shimmer h-48 rounded-2xl bg-white" />
+                    <div aria-hidden="true" className="skeleton-shimmer h-48 rounded-2xl bg-[#FAFCFA]" />
                 </div>
             </main>
         );
@@ -67,7 +67,7 @@ export default function UpdateProfile() {
                 <Link href="/profile" className="text-sm font-semibold text-[#047F39] hover:underline">
                     ← প্রোফাইলে ফিরে যান
                 </Link>
-                <section className="mt-5 rounded-2xl border border-[#E5E7EB] bg-white p-6 sm:p-8">
+                <section className="mt-5 rounded-2xl border border-[#E5E7EB] bg-[#FAFCFA] p-6 sm:p-8">
                     <h1 className="text-2xl font-bold text-[#111827]">তথ্য আপডেট করুন</h1>
                     <p className="mt-2 text-sm text-[#6B7280]">আপনার অ্যাকাউন্টের নাম পরিবর্তন করুন।</p>
                     <Form className="mt-6 flex flex-col gap-4" onSubmit={handleSubmit}>

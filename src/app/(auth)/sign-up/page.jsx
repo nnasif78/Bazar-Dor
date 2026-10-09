@@ -53,7 +53,7 @@ const SignUp = () => {
                     <p className="mt-2 text-[14px] font-normal leading-5 text-[#6B7280]">বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন।</p>
                 </div>
 
-                <div className="w-[416px] max-w-full rounded-2xl border border-[#E5E7EB] bg-white p-5 shadow-sm">
+                <div className="w-[416px] max-w-full rounded-2xl border border-[#E5E7EB] bg-[#FAFCFA] p-5 shadow-sm">
                     <Form className="flex w-full flex-col gap-4" onSubmit={onSubmit}>
                         <TextField isRequired name="name" validate={(value) => value.length < 3 ? "নাম কমপক্ষে ৩ অক্ষরের হতে হবে" : null}>
                             <Label className="mb-1.5 text-[14px] font-semibold text-[#111827]">নাম</Label>
@@ -88,11 +88,11 @@ const SignUp = () => {
                         </div>
 
                         <div className="flex w-full gap-2">
-                            <Button type="button" onPress={login} className="h-10 min-w-0 flex-1 rounded-lg border border-[#D1D5DB] bg-white px-2 text-[11px] font-semibold text-[#111827] hover:bg-[#F9FAFB]">
+                            <Button type="button" onPress={login} className="h-10 min-w-0 flex-1 rounded-lg border border-[#D1D5DB] bg-[#FAFCFA] px-2 text-[11px] font-semibold text-[#111827] hover:bg-[#F9FAFB]">
                                 <img src="https://img.icons8.com/color/1200/google-logo.jpg" alt="Google" className="h-5 w-5 shrink-0 rounded-full object-cover" />
                                 <span className="truncate">Google দিয়ে চালিয়ে যান</span>
                             </Button>
-                            <Button type="button" onPress={handleGithubSignIn} className="h-10 min-w-0 flex-1 rounded-lg border border-[#D1D5DB] bg-white px-2 text-[11px] font-semibold text-[#111827] hover:bg-[#F9FAFB]">
+                            <Button type="button" onPress={handleGithubSignIn} className="h-10 min-w-0 flex-1 rounded-lg border border-[#D1D5DB] bg-[#FAFCFA] px-2 text-[11px] font-semibold text-[#111827] hover:bg-[#F9FAFB]">
                                 <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" className="h-5 w-5 shrink-0" />
                                 <span className="truncate">GitHub দিয়ে চালিয়ে যান</span>
                             </Button>
