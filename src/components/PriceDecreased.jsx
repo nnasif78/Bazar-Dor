@@ -55,7 +55,7 @@ export default function PriceDecreased() {
                                 <p className="mt-1 text-[22px] font-bold text-[#111827]">{banglaPrice(product.today)} টাকা</p>
                             </div>
 
-                            <span className="absolute bottom-5 right-5 rounded-full bg-[#F0F5F0] px-2.5 py-1 text-[12px] font-semibold text-[#DC2626]">
+                            <span className="absolute bottom-5 right-5 rounded-full bg-[#F0F5F0] px-2.5 py-1 text-[12px] font-semibold text-[#047F39]">
                                 ▼ {banglaDigits(Math.abs(product.change.pct))}%
                             </span>
                         </div>

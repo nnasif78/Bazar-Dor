@@ -223,9 +223,9 @@ function ProductDetailsContent() {
                             </div>
                         </div>
                         <span className={`inline-flex shrink-0 rounded-full px-2 py-1 text-[12px] font-bold ${direction === "up"
-                                ? "bg-[#F0F5F0] text-[#047F39]"
+                                ? "bg-[#F0F5F0] text-[#DC2626]"
                                 : direction === "down"
-                                    ? "bg-[#F0F5F0] text-[#DC2626]"
+                                    ? "bg-[#F0F5F0] text-[#047F39]"
                                     : "bg-[#F0F5F0] text-[#6B7280]"
                             }`}>
                             {direction === "up" ? "▲" : direction === "down" ? "▼" : "—"}{" "}
